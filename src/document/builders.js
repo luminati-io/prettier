@@ -30,12 +30,13 @@ import { assertDoc, assertDocArray } from "./utils/assert-doc.js";
 
 /**
  * @param {Doc} contents
+ * @param {number} [tabWidth]
  * @returns Doc
  */
-function indent(contents) {
+function indent(contents, tabWidth) {
   assertDoc(contents);
 
-  return { type: DOC_TYPE_INDENT, contents };
+  return { type: DOC_TYPE_INDENT, contents, tabWidth };
 }
 
 /**

@@ -38,8 +38,8 @@ function rootIndent() {
   return { value: "", length: 0, queue: [] };
 }
 
-function makeIndent(ind, options) {
-  return generateInd(ind, { type: "indent" }, options);
+function makeIndent(ind, options, tabWidth) {
+  return generateInd(ind, { type: "indent", tabWidth }, options);
 }
 
 function makeAlign(indent, widthOrDoc, options) {
@@ -83,7 +83,7 @@ function generateInd(ind, newPart, options) {
         if (options.useTabs) {
           addTabs(1);
         } else {
-          addSpaces(options.tabWidth);
+          addSpaces(part.tabWidth || options.tabWidth);
         }
         break;
       case "stringAlign":
@@ -351,7 +351,11 @@ function printDocToString(doc, options) {
         break;
 
       case DOC_TYPE_INDENT:
-        cmds.push({ ind: makeIndent(ind, options), mode, doc: doc.contents });
+        cmds.push({
+          ind: makeIndent(ind, options, doc.tabWidth),
+          mode,
+          doc: doc.contents,
+        });
         break;
 
       case DOC_TYPE_ALIGN:

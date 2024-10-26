@@ -93,6 +93,12 @@ const options = {
     ],
   },
   singleAttributePerLine: commonOptions.singleAttributePerLine,
+  jsxTabWidth: {
+    type: "int",
+    category: CATEGORY_JAVASCRIPT,
+    description: "Number of spaces per indentation level in JSX.",
+    range: { start: 0, end: Number.POSITIVE_INFINITY, step: 1 },
+  },
 };
 
 export default options;
