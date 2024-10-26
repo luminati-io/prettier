@@ -270,7 +270,7 @@ function printJsxElementInternal(path, options, print) {
 
   const multiLineElem = group([
     openingLines,
-    indent([hardline, content]),
+    indent([hardline, content], options.jsxTabWidth),
     hardline,
     closingLines,
   ]);
@@ -485,7 +485,7 @@ function maybeWrapJsxElementInParens(path, elem, options) {
   return group(
     [
       needsParens ? "" : ifBreak("("),
-      indent([softline, elem]),
+      indent([softline, elem], options.jsxTabWidth),
       softline,
       needsParens ? "" : ifBreak(")"),
     ],
@@ -555,7 +555,7 @@ function printJsxExpressionContainer(path, options, print) {
 
   return group([
     "{",
-    indent([softline, print("expression")]),
+    indent([softline, print("expression")], options.jsxTabWidth),
     softline,
     lineSuffixBoundary,
     "}",
@@ -623,7 +623,10 @@ function printJsxOpeningElement(path, options, print) {
       "<",
       print("name"),
       node.typeArguments ? print("typeArguments") : print("typeParameters"),
-      indent(path.map(() => [attributeLine, print()], "attributes")),
+      indent(
+        path.map(() => [attributeLine, print()], "attributes"),
+        options.jsxTabWidth,
+      ),
       ...printEndOfOpeningTag(node, options, nameHasComments),
     ],
     { shouldBreak },
@@ -678,7 +681,7 @@ function printJsxClosingElement(path, options, print) {
   if (
     hasComment(node.name, CommentCheckFlags.Leading | CommentCheckFlags.Line)
   ) {
-    parts.push(indent([hardline, printed]), hardline);
+    parts.push(indent([hardline, printed], options.jsxTabWidth), hardline);
   } else if (
     hasComment(node.name, CommentCheckFlags.Leading | CommentCheckFlags.Block)
   ) {
@@ -699,14 +702,17 @@ function printJsxOpeningClosingFragment(path, options /*, print*/) {
   const isOpeningFragment = node.type === "JSXOpeningFragment";
   return [
     isOpeningFragment ? "<" : "</",
-    indent([
-      hasOwnLineComment
-        ? hardline
-        : nodeHasComment && !isOpeningFragment
-          ? " "
-          : "",
-      printDanglingComments(path, options),
-    ]),
+    indent(
+      [
+        hasOwnLineComment
+          ? hardline
+          : nodeHasComment && !isOpeningFragment
+            ? " "
+            : "",
+        printDanglingComments(path, options),
+      ],
+      options.jsxTabWidth,
+    ),
     hasOwnLineComment ? hardline : "",
     ">",
   ];
@@ -743,7 +749,10 @@ function printJsxSpreadAttributeOrChild(path, options, print) {
           return printed;
         }
         return [
-          indent([softline, printComments(path, printed, options)]),
+          indent(
+            [softline, printComments(path, printed, options)],
+            options.jsxTabWidth,
+          ),
           softline,
         ];
       },

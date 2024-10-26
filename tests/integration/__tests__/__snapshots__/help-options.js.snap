@@ -301,6 +301,16 @@ Default: false"
 
 exports[`show detailed usage with --help jsx-single-quote (write) 1`] = `[]`;
 
+exports[`show detailed usage with --help jsx-tab-width (stderr) 1`] = `""`;
+
+exports[`show detailed usage with --help jsx-tab-width (stdout) 1`] = `
+"--jsx-tab-width <int>
+
+  Number of spaces per indentation level in JSX."
+`;
+
+exports[`show detailed usage with --help jsx-tab-width (write) 1`] = `[]`;
+
 exports[`show detailed usage with --help list-different (stderr) 1`] = `""`;
 
 exports[`show detailed usage with --help list-different (stdout) 1`] = `
