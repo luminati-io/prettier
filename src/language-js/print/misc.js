@@ -1,4 +1,4 @@
-import { indent, line } from "../../document/builders.js";
+import { indent, line, hardline } from "../../document/builders.js";
 import { isCallExpression, isMemberExpression } from "../utils/index.js";
 import { printTypeAnnotationProperty } from "./type-annotation.js";
 
@@ -105,16 +105,20 @@ function printBindExpressionCallee(path, options, print) {
   return ["::", print("callee")];
 }
 
-function adjustClause(node, clause, forceSpace) {
+function adjustClause(node, clause, forceSpace, brdFormatting) {
   if (node.type === "EmptyStatement") {
     return ";";
   }
 
-  if (node.type === "BlockStatement" || forceSpace) {
+  if (node.type === "BlockStatement") {
+    return brdFormatting ? clause : [" ", clause];
+  }
+
+  if (forceSpace) {
     return [" ", clause];
   }
 
-  return indent([line, clause]);
+  return indent([brdFormatting ? hardline : line, clause]);
 }
 
 function printRestSpread(path, print) {
