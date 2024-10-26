@@ -8,6 +8,7 @@ import {
   indent,
   line,
   softline,
+  fill,
 } from "../../document/builders.js";
 import { willBreak } from "../../document/utils.js";
 import { printDanglingComments } from "../../main/comments/print.js";
@@ -65,17 +66,23 @@ function printCallArguments(path, options, print) {
   const printedArguments = [];
   iterateCallArgumentsPath(path, ({ node: arg }, index) => {
     let argDoc = print();
-
+    let whitespace;
     if (index === lastArgIndex) {
       // do nothing
     } else if (isNextLineEmpty(arg, options)) {
       anyArgEmptyLine = true;
       argDoc = [argDoc, ",", hardline, hardline];
+    } else if (options.brdFormatting) {
+      argDoc = [argDoc, ","];
+      whitespace = line;
     } else {
       argDoc = [argDoc, ",", line];
     }
 
     printedArguments.push(argDoc);
+    if (whitespace) {
+      printedArguments.push(whitespace);
+    }
   });
 
   const maybeTrailingComma =

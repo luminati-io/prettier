@@ -755,6 +755,23 @@ function needsParens(path, options) {
     case "AssignmentExpression": {
       const grandParent = path.grandparent;
 
+      if (options.brdFormatting) {
+        if (
+          key === "test" &&
+          (parent.type === "WhileStatement" || parent.type === "IfStatement")
+        ) {
+          return false;
+        }
+
+        if (key === "init" && parent.type === "VariableDeclarator") {
+          return false;
+        }
+
+        if (key === "argument" && parent.type === "ReturnStatement") {
+          return false;
+        }
+      }
+
       if (key === "body" && parent.type === "ArrowFunctionExpression") {
         return !options.brdFormatting;
       }
