@@ -397,7 +397,7 @@ function needsParens(path, options) {
           );
 
         case "LogicalExpression":
-          if (node.type === "LogicalExpression") {
+          if (node.type === "LogicalExpression" && !options.brdFormatting) {
             return parent.operator !== node.operator;
           }
         // else fallthrough
