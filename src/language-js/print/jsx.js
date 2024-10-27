@@ -473,6 +473,10 @@ function maybeWrapJsxElementInParens(path, elem, options) {
     return elem;
   }
 
+  if (options.brdFormatting && !hasComment(path.node)) {
+    return elem;
+  }
+
   const shouldBreak = path.match(
     undefined,
     (node) => node.type === "ArrowFunctionExpression",
@@ -555,8 +559,12 @@ function printJsxExpressionContainer(path, options, print) {
 
   return group([
     "{",
-    indent([softline, print("expression")], options.jsxTabWidth),
-    softline,
+    options.brdFormatting
+      ? print("expression")
+      : [
+          indent([softline, print("expression")], options.jsxTabWidth),
+          softline,
+        ],
     lineSuffixBoundary,
     "}",
   ]);
