@@ -247,10 +247,16 @@ function printBinaryishExpressions(
         )
       : "";
 
+  const operatorSpacing =
+    !options.brdFormatting ||
+    node.type === "LogicalExpression" ||
+    node.operator === "<" ||
+    node.operator === ">" ||
+    node.operator === "instanceof";
   /** @type {Doc} */
   let right;
   if (shouldInline) {
-    right = [operator, " ", print("right"), rightSuffix];
+    right = [operator, operatorSpacing ? " " : "", print("right"), rightSuffix];
   } else {
     const isHackPipeline =
       operator === "|>" && path.root.extra?.__isUsingHackPipeline;
@@ -267,10 +273,22 @@ function printBinaryishExpressions(
           "right",
         )
       : print("right");
+    const operatorPrefix = lineBeforeOperator
+      ? operatorSpacing
+        ? line
+        : softline
+      : "";
+    const operatorSuffix = lineBeforeOperator
+      ? operatorSpacing
+        ? " "
+        : ""
+      : operatorSpacing
+        ? line
+        : softline;
     right = [
-      lineBeforeOperator ? line : "",
+      operatorPrefix,
       operator,
-      lineBeforeOperator ? " " : line,
+      operatorSuffix,
       rightContent,
       rightSuffix,
     ];
@@ -291,7 +309,7 @@ function printBinaryishExpressions(
       node.right.type !== node.type);
 
   parts.push(
-    lineBeforeOperator ? "" : " ",
+    lineBeforeOperator ? "" : operatorSpacing ? " " : "",
     shouldGroup ? group(right, { shouldBreak }) : right,
   );
 

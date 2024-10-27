@@ -383,6 +383,9 @@ function needsParens(path, options) {
         case "AwaitExpression":
         case "TSNonNullExpression":
         case "UpdateExpression":
+          if (options.brdFormatting && parent.type === "SpreadElement") {
+            return false;
+          }
           return true;
 
         case "MemberExpression":
@@ -397,7 +400,7 @@ function needsParens(path, options) {
           );
 
         case "LogicalExpression":
-          if (node.type === "LogicalExpression") {
+          if (node.type === "LogicalExpression" && !options.brdFormatting) {
             return parent.operator !== node.operator;
           }
         // else fallthrough
@@ -422,7 +425,8 @@ function needsParens(path, options) {
 
           if (
             parentPrecedence === precedence &&
-            !shouldFlatten(parentOperator, operator)
+            !shouldFlatten(parentOperator, operator) &&
+            !options.brdFormatting
           ) {
             return true;
           }
