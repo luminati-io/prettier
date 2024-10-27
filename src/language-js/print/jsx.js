@@ -473,6 +473,10 @@ function maybeWrapJsxElementInParens(path, elem, options) {
     return elem;
   }
 
+  if (options.brdFormatting && !hasComment(path.node)) {
+    return elem;
+  }
+
   const shouldBreak = path.match(
     undefined,
     (node) => node.type === "ArrowFunctionExpression",
