@@ -756,7 +756,7 @@ function needsParens(path, options) {
       const grandParent = path.grandparent;
 
       if (key === "body" && parent.type === "ArrowFunctionExpression") {
-        return true;
+        return !options.brdFormatting;
       }
 
       if (

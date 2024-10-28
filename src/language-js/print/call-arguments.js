@@ -123,15 +123,27 @@ function printCallArguments(path, options, print) {
       return [
         breakParent,
         conditionalGroup([
-          ["(", group(firstArg, { shouldBreak: true }), ", ", ...tailArgs, ")"],
+          [
+            "(",
+            group(firstArg, { shouldBreak: true }),
+            options.brdFormatting ? "," : ", ",
+            ...tailArgs,
+            ")",
+          ],
           allArgsBrokenOut(),
         ]),
       ];
     }
 
     return conditionalGroup([
-      ["(", firstArg, ", ", ...tailArgs, ")"],
-      ["(", group(firstArg, { shouldBreak: true }), ", ", ...tailArgs, ")"],
+      ["(", firstArg, options.brdFormatting ? "," : ", ", ...tailArgs, ")"],
+      [
+        "(",
+        group(firstArg, { shouldBreak: true }),
+        options.brdFormatting ? "," : ", ",
+        ...tailArgs,
+        ")",
+      ],
       allArgsBrokenOut(),
     ]);
   }
@@ -171,13 +183,21 @@ function printCallArguments(path, options, print) {
     ]);
   }
 
-  const contents = [
-    "(",
-    indent([softline, ...printedArguments]),
-    ifBreak(maybeTrailingComma),
-    softline,
-    ")",
-  ];
+  const contents = options.brdFormatting
+    ? [
+        "(",
+        args.length === 1 ? printedArguments : indent(fill(printedArguments)),
+        ifBreak(maybeTrailingComma),
+        ")",
+      ]
+    : [
+        "(",
+        indent([softline, ...printedArguments]),
+        ifBreak(maybeTrailingComma),
+        softline,
+        ")",
+      ];
+
   if (isLongCurriedCallExpression(path)) {
     // By not wrapping the arguments in a group, the printer prioritizes
     // breaking up these arguments rather than the args of the parent call.

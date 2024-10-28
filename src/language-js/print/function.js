@@ -80,7 +80,8 @@ function printFunction(path, print, options, args) {
   const parts = [
     printDeclareToken(path),
     node.async ? "async " : "",
-    `function${node.generator ? "*" : ""} `,
+    `function${node.generator ? "*" : ""}`,
+    options.brdFormatting && (!node.id || node.generator) ? "" : " ",
     node.id ? print("id") : "",
   ];
 
@@ -96,13 +97,21 @@ function printFunction(path, print, options, args) {
     returnTypeDoc,
   );
 
+  const paramsGroupId = Symbol("params");
+
   parts.push(
     printFunctionTypeParameters(path, options, print),
-    group([
-      shouldGroupParameters ? group(parametersDoc) : parametersDoc,
-      returnTypeDoc,
-    ]),
-    node.body ? " " : "",
+    group(
+      [
+        shouldGroupParameters ? group(parametersDoc) : parametersDoc,
+        returnTypeDoc,
+      ],
+      { id: paramsGroupId },
+    ),
+    node.body && !options.brdFormatting ? " " : "",
+    options.brdFormatting
+      ? ifBreak(hardline, "", { groupId: paramsGroupId })
+      : "",
     print("body"),
   );
 
@@ -175,7 +184,7 @@ function printMethodValue(path, options, print) {
   ];
 
   if (node.body) {
-    parts.push(" ", print("body"));
+    parts.push(options.brdFormatting ? "" : " ", print("body"));
   } else {
     parts.push(options.semi ? ";" : "");
   }

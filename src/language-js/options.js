@@ -99,6 +99,12 @@ const options = {
     description: "Number of spaces per indentation level in JSX.",
     range: { start: 0, end: Number.POSITIVE_INFINITY, step: 1 },
   },
+  brdFormatting: {
+    category: CATEGORY_JAVASCRIPT,
+    type: "boolean",
+    default: false,
+    description: "Use Brightdata formatting rules.",
+  },
 };
 
 export default options;
