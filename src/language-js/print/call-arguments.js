@@ -8,6 +8,7 @@ import {
   indent,
   line,
   softline,
+  fill,
 } from "../../document/builders.js";
 import { willBreak } from "../../document/utils.js";
 import { printDanglingComments } from "../../main/comments/print.js";
@@ -39,6 +40,7 @@ import { isConciselyPrintedArray } from "./array.js";
 
 function printCallArguments(path, options, print) {
   const { node } = path;
+  const { brdFormatting } = options;
 
   const args = getCallArguments(node);
   if (args.length === 0) {
@@ -49,7 +51,7 @@ function printCallArguments(path, options, print) {
 
   // useEffect(() => { ... }, [foo, bar, baz])
   // useImperativeHandle(ref, () => { ... }, [foo, bar, baz])
-  if (isReactHookCallWithDepsArray(args)) {
+  if (isReactHookCallWithDepsArray(args, options)) {
     const parts = ["("];
     iterateCallArgumentsPath(path, (path, index) => {
       parts.push(print());
@@ -65,17 +67,23 @@ function printCallArguments(path, options, print) {
   const printedArguments = [];
   iterateCallArgumentsPath(path, ({ node: arg }, index) => {
     let argDoc = print();
-
+    let whitespace;
     if (index === lastArgIndex) {
       // do nothing
     } else if (isNextLineEmpty(arg, options)) {
       anyArgEmptyLine = true;
       argDoc = [argDoc, ",", hardline, hardline];
+    } else if (brdFormatting) {
+      argDoc = [argDoc, ","];
+      whitespace = line;
     } else {
       argDoc = [argDoc, ",", line];
     }
 
     printedArguments.push(argDoc);
+    if (whitespace) {
+      printedArguments.push(whitespace);
+    }
   });
 
   const maybeTrailingComma =
@@ -89,7 +97,13 @@ function printCallArguments(path, options, print) {
 
   function allArgsBrokenOut() {
     return group(
-      ["(", indent([line, ...printedArguments]), maybeTrailingComma, line, ")"],
+      [
+        "(",
+        brdFormatting
+          ? [indent(fill(printedArguments)), maybeTrailingComma]
+          : [indent([line, ...printedArguments]), maybeTrailingComma, line],
+        ")",
+      ],
       { shouldBreak: true },
     );
   }
@@ -101,7 +115,7 @@ function printCallArguments(path, options, print) {
     return allArgsBrokenOut();
   }
 
-  if (shouldExpandFirstArg(args)) {
+  if (!brdFormatting && shouldExpandFirstArg(args)) {
     const tailArgs = printedArguments.slice(1);
     if (tailArgs.some(willBreak)) {
       return allArgsBrokenOut();
@@ -136,7 +150,7 @@ function printCallArguments(path, options, print) {
     ]);
   }
 
-  if (shouldExpandLastArg(args, printedArguments, options)) {
+  if (!brdFormatting && shouldExpandLastArg(args, printedArguments, options)) {
     const headArgs = printedArguments.slice(0, -1);
     if (headArgs.some(willBreak)) {
       return allArgsBrokenOut();
@@ -171,13 +185,21 @@ function printCallArguments(path, options, print) {
     ]);
   }
 
-  const contents = [
-    "(",
-    indent([softline, ...printedArguments]),
-    ifBreak(maybeTrailingComma),
-    softline,
-    ")",
-  ];
+  const contents = brdFormatting
+    ? [
+        "(",
+        args.length === 1 ? printedArguments : indent(fill(printedArguments)),
+        ifBreak(maybeTrailingComma),
+        ")",
+      ]
+    : [
+        "(",
+        indent([softline, ...printedArguments]),
+        ifBreak(maybeTrailingComma),
+        softline,
+        ")",
+      ];
+
   if (isLongCurriedCallExpression(path)) {
     // By not wrapping the arguments in a group, the printer prioritizes
     // breaking up these arguments rather than the args of the parent call.
@@ -335,14 +357,14 @@ function isHopefullyShortCallArgument(node) {
 /**
  * Checks if the arguments of a function are a call to a React Hook with a dependencies array.
  */
-function isReactHookCallWithDepsArray(args) {
+function isReactHookCallWithDepsArray(args, options) {
   if (args.length === 2) {
     /**
      * useEffect(() => {
      *   // do something
      * }, [dep1, dep2, dep2])
      */
-    return isValidHookCallbackAndDepsFormat(args, /* baseIndex */ 0);
+    return isValidHookCallbackAndDepsFormat(args, /* baseIndex */ 0, options);
   }
   if (args.length === 3) {
     /**
@@ -358,13 +380,14 @@ function isReactHookCallWithDepsArray(args) {
   return false;
 }
 
-function isValidHookCallbackAndDepsFormat(args, baseIndex) {
+function isValidHookCallbackAndDepsFormat(args, baseIndex, options = {}) {
   const maybeArrowFunction = args[baseIndex];
   const maybeDepsArray = args[baseIndex + 1];
   return (
     maybeArrowFunction.type === "ArrowFunctionExpression" &&
-    getFunctionParameters(maybeArrowFunction).length === 0 &&
-    maybeArrowFunction.body.type === "BlockStatement" &&
+    (options.brdFormatting ||
+      (getFunctionParameters(maybeArrowFunction).length === 0 &&
+        maybeArrowFunction.body.type === "BlockStatement")) &&
     maybeDepsArray.type === "ArrayExpression" &&
     !args.some((arg) => hasComment(arg))
   );

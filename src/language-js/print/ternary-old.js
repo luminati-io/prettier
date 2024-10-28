@@ -7,6 +7,7 @@ import {
   indent,
   line,
   softline,
+  hardline,
 } from "../../document/builders.js";
 import hasNewlineInRange from "../../utils/has-newline-in-range.js";
 import { locEnd, locStart } from "../loc.js";
@@ -192,6 +193,7 @@ function shouldExtraIndentForConditionalExpression(path) {
  */
 function printTernaryOld(path, options, print) {
   const { node } = path;
+  const { brdFormatting } = options;
   const isConditionalExpression = node.type === "ConditionalExpression";
   const consequentNodePropertyName = isConditionalExpression
     ? "consequent"
@@ -248,12 +250,10 @@ function printTernaryOld(path, options, print) {
     // Even though they don't need parens, we wrap (almost) everything in
     // parens when using ?: within JSX, because the parens are analogous to
     // curly braces in an if statement.
-    const wrap = (doc) => [
-      ifBreak("("),
-      indent([softline, doc]),
-      softline,
-      ifBreak(")"),
-    ];
+    const wrap = (doc) => {
+      if (brdFormatting) return doc;
+      return [ifBreak("("), indent([softline, doc]), softline, ifBreak(")")];
+    };
 
     // The only things we don't wrap are:
     // * Nested conditional expressions in alternates
@@ -264,16 +264,30 @@ function printTernaryOld(path, options, print) {
       (node.type === "Literal" && node.value === null) ||
       (node.type === "Identifier" && node.name === "undefined");
 
-    parts.push(
-      " ? ",
-      isNil(consequentNode)
-        ? print(consequentNodePropertyName)
-        : wrap(print(consequentNodePropertyName)),
-      " : ",
+    const consequent = isNil(consequentNode)
+      ? print(consequentNodePropertyName)
+      : wrap(print(consequentNodePropertyName));
+    const alternate =
       alternateNode.type === node.type || isNil(alternateNode)
         ? print(alternateNodePropertyName)
-        : wrap(print(alternateNodePropertyName)),
-    );
+        : wrap(print(alternateNodePropertyName));
+    if (brdFormatting) {
+      parts.push(
+        indent(
+          [
+            line,
+            "? ",
+            indent(consequent, options.jsxTabWidth),
+            line,
+            ": ",
+            indent(alternate, options.jsxTabWidth),
+          ],
+          options.jsxTabWidth,
+        ),
+      );
+    } else {
+      parts.push(" ? ", consequent, " : ", alternate);
+    }
   } else {
     /*
     This does not mean to indent, but make the doc aligned with the first character after `? ` or `: `,
@@ -302,8 +316,7 @@ function printTernaryOld(path, options, print) {
         ? indent(print(nodePropertyName))
         : align(2, print(nodePropertyName));
     // normal mode
-    const part = [
-      line,
+    let part = [
       "? ",
       consequentNode.type === node.type ? ifBreak("", "(") : "",
       printBranch(consequentNodePropertyName),
@@ -312,6 +325,11 @@ function printTernaryOld(path, options, print) {
       ": ",
       printBranch(alternateNodePropertyName),
     ];
+    if (brdFormatting) {
+      part = [line, group(part)];
+    } else {
+      part.unshift(line);
+    }
     parts.push(
       parent.type !== node.type ||
         parent[alternateNodePropertyName] === node ||
@@ -362,13 +380,20 @@ function printTernaryOld(path, options, print) {
 
   const shouldExtraIndent = shouldExtraIndentForConditionalExpression(path);
 
-  const result = maybeGroup([
+  let result = maybeGroup([
     printTernaryTest(path, options, print),
     forceNoIndent ? parts : indent(parts),
     isConditionalExpression && breakClosingParen && !shouldExtraIndent
       ? softline
       : "",
   ]);
+  if (brdFormatting && jsxMode) {
+    const groupId = Symbol("jsxGroup");
+    result = [
+      group(result, { id: groupId }),
+      ifBreak(hardline, "", { groupId }),
+    ];
+  }
 
   return isParentTest || shouldExtraIndent
     ? group([indent([softline, result]), softline])

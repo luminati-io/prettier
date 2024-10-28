@@ -7,6 +7,7 @@ import {
   join,
   line,
   softline,
+  hardline,
 } from "../../document/builders.js";
 import { removeLines, willBreak } from "../../document/utils.js";
 import {
@@ -105,13 +106,16 @@ function printArrowFunction(path, options, print, args = {}) {
     }
   })();
 
+  const _shouldAddParensIfNotBreak = options.brdFormatting
+    ? () => false
+    : shouldAddParensIfNotBreak;
   // We want to always keep these types of nodes on the same line
   // as the arrow.
   const shouldPutBodyOnSameLine =
     !hasLeadingOwnLineComment(options.originalText, functionBody) &&
     (shouldAlwaysAddParens(functionBody) ||
       mayBreakAfterShortPrefix(functionBody, bodyDoc, options) ||
-      (!shouldBreakChain && shouldAddParensIfNotBreak(functionBody)));
+      (!shouldBreakChain && _shouldAddParensIfNotBreak(functionBody)));
 
   const isCallee = path.key === "callee" && isCallLikeExpression(path.parent);
   const chainGroupId = Symbol("arrow-chain");
@@ -119,6 +123,7 @@ function printArrowFunction(path, options, print, args = {}) {
   const signaturesDoc = printArrowFunctionSignatures(path, args, {
     signatureDocs,
     shouldBreak: shouldBreakChain,
+    brdFormatting: options.brdFormatting,
   });
   let shouldBreakSignatures = false;
   let shouldIndentSignatures = false;
@@ -156,7 +161,10 @@ function printArrowFunction(path, options, print, args = {}) {
         : signaturesDoc,
       { shouldBreak: shouldBreakSignatures, id: chainGroupId },
     ),
-    " =>",
+    options.brdFormatting ? "=>" : " =>",
+    options.brdFormatting
+      ? ifBreak(softline, "", { groupId: chainGroupId })
+      : "",
     shouldPrintAsChain
       ? indentIfBreak(bodyDoc, { groupId: chainGroupId })
       : group(bodyDoc),
@@ -212,7 +220,8 @@ function printArrowFunctionSignature(path, options, print, args) {
     },
   });
   if (dangling) {
-    parts.push(" ", dangling);
+    // parts.push(" ", dangling);
+    parts.push(options.brdFormatting ? "" : " ", dangling);
   }
   return parts;
 }
@@ -244,12 +253,13 @@ function mayBreakAfterShortPrefix(functionBody, bodyDoc, options) {
  * @param {Object} arrowFunctionSignaturesPrintOptions
  * @param {Doc[]} arrowFunctionSignaturesPrintOptions.signatureDocs
  * @param {boolean} arrowFunctionSignaturesPrintOptions.shouldBreak
+ * @param {boolean} arrowFunctionSignaturesPrintOptions.brdFormatting
  * @returns {Doc}
  */
 function printArrowFunctionSignatures(
   path,
   args,
-  { signatureDocs, shouldBreak },
+  { signatureDocs, shouldBreak, brdFormatting },
 ) {
   if (signatureDocs.length === 1) {
     return signatureDocs[0];
@@ -260,6 +270,9 @@ function printArrowFunctionSignatures(
     (key !== "callee" && isCallLikeExpression(parent)) ||
     isBinaryish(parent)
   ) {
+    if (brdFormatting) {
+      return group([join("=>", signatureDocs)], { shouldBreak });
+    }
     return group(
       [
         signatureDocs[0],
@@ -275,10 +288,22 @@ function printArrowFunctionSignatures(
     // isAssignmentRhs
     args.assignmentLayout
   ) {
-    return group(join([" =>", line], signatureDocs), { shouldBreak });
+    return group(
+      brdFormatting
+        ? join("=>", signatureDocs)
+        : join([" =>", line], signatureDocs),
+      {
+        shouldBreak,
+      },
+    );
   }
 
-  return group(indent(join([" =>", line], signatureDocs)), { shouldBreak });
+  return group(
+    brdFormatting
+      ? join("=>", signatureDocs)
+      : indent(join([" =>", line], signatureDocs)),
+    { shouldBreak },
+  );
 }
 
 /**
@@ -312,9 +337,12 @@ function printArrowFunctionBody(
       ? softline
       : "";
 
-  if (shouldPutBodyOnSameLine && shouldAddParensIfNotBreak(functionBody)) {
+  const _shouldAddParensIfNotBreak = options.brdFormatting
+    ? () => false
+    : shouldAddParensIfNotBreak;
+  if (shouldPutBodyOnSameLine && _shouldAddParensIfNotBreak(functionBody)) {
     return [
-      " ",
+      options.brdFormatting ? "" : " ",
       group([
         ifBreak("", "("),
         indent([softline, bodyDoc]),
@@ -328,6 +356,12 @@ function printArrowFunctionBody(
 
   if (shouldAlwaysAddParens(functionBody)) {
     bodyDoc = group(["(", indent([softline, bodyDoc]), softline, ")"]);
+  }
+
+  if (options.brdFormatting) {
+    return shouldPutBodyOnSameLine
+      ? [bodyDoc, bodyComments]
+      : [bodyDoc, bodyComments, trailingComma, trailingSpace];
   }
 
   return shouldPutBodyOnSameLine

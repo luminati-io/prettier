@@ -383,6 +383,9 @@ function needsParens(path, options) {
         case "AwaitExpression":
         case "TSNonNullExpression":
         case "UpdateExpression":
+          if (options.brdFormatting && parent.type === "SpreadElement") {
+            return false;
+          }
           return true;
 
         case "MemberExpression":
@@ -397,7 +400,7 @@ function needsParens(path, options) {
           );
 
         case "LogicalExpression":
-          if (node.type === "LogicalExpression") {
+          if (node.type === "LogicalExpression" && !options.brdFormatting) {
             return parent.operator !== node.operator;
           }
         // else fallthrough
@@ -422,7 +425,8 @@ function needsParens(path, options) {
 
           if (
             parentPrecedence === precedence &&
-            !shouldFlatten(parentOperator, operator)
+            !shouldFlatten(parentOperator, operator) &&
+            !options.brdFormatting
           ) {
             return true;
           }
@@ -755,8 +759,25 @@ function needsParens(path, options) {
     case "AssignmentExpression": {
       const grandParent = path.grandparent;
 
+      if (options.brdFormatting) {
+        if (
+          key === "test" &&
+          (parent.type === "WhileStatement" || parent.type === "IfStatement")
+        ) {
+          return false;
+        }
+
+        if (key === "init" && parent.type === "VariableDeclarator") {
+          return false;
+        }
+
+        if (key === "argument" && parent.type === "ReturnStatement") {
+          return false;
+        }
+      }
+
       if (key === "body" && parent.type === "ArrowFunctionExpression") {
-        return true;
+        return !options.brdFormatting;
       }
 
       if (
@@ -833,6 +854,9 @@ function needsParens(path, options) {
         case "AsConstExpression":
         case "SatisfiesExpression":
         case "TSNonNullExpression":
+          if (parent.type === "SpreadElement" && options.brdFormatting) {
+            return false;
+          }
           return true;
 
         case "NewExpression":

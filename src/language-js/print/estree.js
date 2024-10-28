@@ -5,6 +5,7 @@ import {
   join,
   line,
   softline,
+  fill,
 } from "../../document/builders.js";
 import { replaceEndOfLine } from "../../document/utils.js";
 import { printDanglingComments } from "../../main/comments/print.js";
@@ -57,6 +58,7 @@ import {
   printDefiniteToken,
   printOptionalToken,
   printRestSpread,
+  printBody,
 } from "./misc.js";
 import {
   printExportDeclaration,
@@ -87,6 +89,7 @@ import { printTypeAnnotationProperty } from "./type-annotation.js";
  */
 function printEstree(path, options, print, args) {
   const { node } = path;
+  const { brdFormatting } = options;
 
   if (isLiteral(node)) {
     return printLiteral(path, options);
@@ -349,7 +352,11 @@ function printEstree(path, options, print, args) {
             .slice(1)
             .map((p) => [
               ",",
-              hasValue && !isParentForLoop ? hardline : line,
+              brdFormatting && hasValue
+                ? " "
+                : hasValue && !isParentForLoop
+                  ? hardline
+                  : line,
               p,
             ]),
         ),
@@ -369,10 +376,18 @@ function printEstree(path, options, print, args) {
         adjustClause(node.body, print("body")),
       ]);
     case "IfStatement": {
-      const consequent = adjustClause(node.consequent, print("consequent"));
+      const consequent = adjustClause(
+        node.consequent,
+        print("consequent"),
+        null,
+        brdFormatting,
+      );
+      const testDoc = print("test");
       const opening = group([
         "if (",
-        group([indent([softline, print("test")]), softline]),
+        brdFormatting
+          ? indent(Array.isArray(testDoc) ? fill(testDoc) : testDoc)
+          : group([indent([softline, testDoc]), softline]),
         ")",
         consequent,
       ]);
@@ -397,12 +412,14 @@ function printEstree(path, options, print, args) {
         }
 
         parts.push(
+          brdFormatting && elseOnSameLine ? hardline : "",
           "else",
           group(
             adjustClause(
               node.alternate,
               print("alternate"),
               node.alternate.type === "IfStatement",
+              brdFormatting,
             ),
           ),
         );
@@ -411,7 +428,7 @@ function printEstree(path, options, print, args) {
       return parts;
     }
     case "ForStatement": {
-      const body = adjustClause(node.body, print("body"));
+      const body = printBody(node, print, options);
 
       // We want to keep dangling comments above the loop to stay consistent.
       // Any comment positioned between the for statement and the parentheses
@@ -450,7 +467,7 @@ function printEstree(path, options, print, args) {
         "while (",
         group([indent([softline, print("test")]), softline]),
         ")",
-        adjustClause(node.body, print("body")),
+        printBody(node, print, options),
       ]);
     case "ForInStatement":
       return group([
@@ -459,7 +476,7 @@ function printEstree(path, options, print, args) {
         " in ",
         print("right"),
         ")",
-        adjustClause(node.body, print("body")),
+        printBody(node, print, options),
       ]);
 
     case "ForOfStatement":
@@ -471,15 +488,20 @@ function printEstree(path, options, print, args) {
         " of ",
         print("right"),
         ")",
-        adjustClause(node.body, print("body")),
+        printBody(node, print, options),
       ]);
 
     case "DoWhileStatement": {
-      const clause = adjustClause(node.body, print("body"));
+      const clause = adjustClause(
+        node.body,
+        print("body"),
+        null,
+        brdFormatting,
+      );
       const doBody = group(["do", clause]);
       parts = [doBody];
 
-      if (node.body.type === "BlockStatement") {
+      if (node.body.type === "BlockStatement" && !brdFormatting) {
         parts.push(" ");
       } else {
         parts.push(hardline);
@@ -520,6 +542,7 @@ function printEstree(path, options, print, args) {
         node.finalizer ? [" finally ", print("finalizer")] : "",
       ];
     case "CatchClause":
+      const space = brdFormatting ? "" : " ";
       if (node.param) {
         const parameterHasComments = hasComment(
           node.param,
@@ -535,17 +558,33 @@ function printEstree(path, options, print, args) {
         const param = print("param");
 
         return [
-          "catch ",
+          "catch",
+          space,
           parameterHasComments
-            ? ["(", indent([softline, param]), softline, ") "]
-            : ["(", param, ") "],
+            ? ["(", indent([softline, param]), softline, ")", space]
+            : ["(", param, ")", space],
           print("body"),
         ];
       }
-
-      return ["catch ", print("body")];
+      return ["catch", space, print("body")];
     // Note: ignoring n.lexical because it has no printing consequences.
     case "SwitchStatement":
+      const indentFn = brdFormatting ? (contents) => contents : indent;
+      node.cases.length > 0
+        ? [
+            hardline,
+            join(
+              hardline,
+              path.map(
+                ({ node, isLast }) => [
+                  print(),
+                  !isLast && isNextLineEmpty(node, options) ? hardline : "",
+                ],
+                "cases",
+              ),
+            ),
+          ]
+        : "";
       return [
         group([
           "switch (",
@@ -553,9 +592,10 @@ function printEstree(path, options, print, args) {
           softline,
           ")",
         ]),
-        " {",
+        brdFormatting ? hardline : " ",
+        "{",
         node.cases.length > 0
-          ? indent([
+          ? indentFn([
               hardline,
               join(
                 hardline,

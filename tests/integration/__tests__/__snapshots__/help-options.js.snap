@@ -41,6 +41,18 @@ Default: true"
 
 exports[`show detailed usage with --help bracket-spacing (write) 1`] = `[]`;
 
+exports[`show detailed usage with --help brd-formatting (stderr) 1`] = `""`;
+
+exports[`show detailed usage with --help brd-formatting (stdout) 1`] = `
+"--brd-formatting
+
+  Use Brightdata formatting rules.
+
+Default: false"
+`;
+
+exports[`show detailed usage with --help brd-formatting (write) 1`] = `[]`;
+
 exports[`show detailed usage with --help cache (stderr) 1`] = `""`;
 
 exports[`show detailed usage with --help cache (stdout) 1`] = `

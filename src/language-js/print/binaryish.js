@@ -6,6 +6,9 @@ import {
   join,
   line,
   softline,
+  dedent,
+  ifBreak,
+  hardline,
 } from "../../document/builders.js";
 import { DOC_TYPE_FILL, DOC_TYPE_GROUP } from "../../document/constants.js";
 import { cleanDoc } from "../../document/utils.js";
@@ -22,6 +25,7 @@ import {
   isObjectOrRecordExpression,
   isObjectProperty,
   shouldFlatten,
+  isStringLiteral,
 } from "../utils/index.js";
 
 /** @import {Doc} from "../../document/builders.js" */
@@ -37,6 +41,22 @@ function printBinaryishExpression(path, options, print) {
       parent.type === "DoWhileStatement");
   const isHackPipeline =
     node.operator === "|>" && path.root.extra?.__isUsingHackPipeline;
+
+  if (
+    options.brdFormatting &&
+    !isInsideParenthesis &&
+    isStringLiteralConcatenation(node)
+  ) {
+    const right = [softline, "+", print("right")];
+    let i = 0;
+    let maybeCallExpression;
+    while ((maybeCallExpression = path.getParentNode(i))) {
+      if (!isStringLiteralConcatenation(maybeCallExpression)) break;
+      i++;
+    }
+    const shouldIndent = maybeCallExpression?.type === "CallExpression";
+    return [print("left"), shouldIndent ? indent(right) : dedent(right)];
+  }
 
   const parts = printBinaryishExpressions(
     path,
@@ -172,6 +192,14 @@ function printBinaryishExpression(path, options, print) {
   return group([chain, indentIfBreak(jsxPart, { groupId })]);
 }
 
+function isStringLiteralConcatenation(node) {
+  return (
+    node.operator === "+" &&
+    (isStringLiteral(node.left) || isStringLiteralConcatenation(node.left)) &&
+    isStringLiteral(node.right)
+  );
+}
+
 // For binary expressions to be consistent, we need to group
 // subsequent operators with the same precedence level under a single
 // group. Otherwise they will be nested such that some of them break
@@ -188,11 +216,56 @@ function printBinaryishExpressions(
   isInsideParenthesis,
 ) {
   const { node } = path;
+  const { brdFormatting } = options;
 
   // Simply print the node normally.
   if (!isBinaryish(node)) {
     return [group(print())];
   }
+
+  const isJsxCondition =
+    brdFormatting && (isJsxElement(node.left) || isJsxElement(node.right));
+
+  const shouldInline = shouldInlineLogicalExpression(node);
+  const lineBeforeOperator =
+    (node.operator === "|>" ||
+      node.type === "NGPipeExpression" ||
+      isVueFilterSequenceExpression(path, options)) &&
+    !hasLeadingOwnLineComment(options.originalText, node.right);
+
+  const operator = node.type === "NGPipeExpression" ? "|" : node.operator;
+  const rightSuffix =
+    node.type === "NGPipeExpression" && node.arguments.length > 0
+      ? group(
+          indent([
+            softline,
+            ": ",
+            join(
+              [line, ": "],
+              path.map(() => align(2, group(print())), "arguments"),
+            ),
+          ]),
+        )
+      : "";
+
+  const operatorSpacing =
+    !brdFormatting ||
+    node.type === "LogicalExpression" ||
+    node.operator === "instanceof" ||
+    node.operator === "in";
+
+  const operatorPrefix = lineBeforeOperator
+    ? operatorSpacing
+      ? line
+      : softline
+    : "";
+  const operatorSuffix = lineBeforeOperator
+    ? operatorSpacing
+      ? " "
+      : ""
+    : operatorSpacing
+      ? line
+      : softline;
 
   /** @type{Doc[]} */
   let parts = [];
@@ -222,35 +295,37 @@ function printBinaryishExpressions(
       "left",
     );
   } else {
-    parts.push(group(print("left")));
-  }
-
-  const shouldInline = shouldInlineLogicalExpression(node);
-  const lineBeforeOperator =
-    (node.operator === "|>" ||
-      node.type === "NGPipeExpression" ||
-      isVueFilterSequenceExpression(path, options)) &&
-    !hasLeadingOwnLineComment(options.originalText, node.right);
-
-  const operator = node.type === "NGPipeExpression" ? "|" : node.operator;
-  const rightSuffix =
-    node.type === "NGPipeExpression" && node.arguments.length > 0
-      ? group(
-          indent([
-            softline,
-            ": ",
-            join(
-              [line, ": "],
-              path.map(() => align(2, group(print())), "arguments"),
-            ),
+    const left = print("left");
+    if (isJsxCondition) {
+      if (shouldInline) {
+        parts.push(
+          group([
+            ...left,
+            lineBeforeOperator ? "" : operatorSpacing ? " " : "",
+            operator,
           ]),
-        )
-      : "";
+        );
+      } else {
+        parts.push(group([...left, operatorPrefix, operator]));
+      }
+    } else {
+      parts.push(group(left));
+    }
+  }
 
   /** @type {Doc} */
   let right;
   if (shouldInline) {
-    right = [operator, " ", print("right"), rightSuffix];
+    if (isJsxCondition) {
+      right = [print("right"), rightSuffix];
+    } else {
+      right = [
+        operator,
+        operatorSpacing ? " " : "",
+        print("right"),
+        rightSuffix,
+      ];
+    }
   } else {
     const isHackPipeline =
       operator === "|>" && path.root.extra?.__isUsingHackPipeline;
@@ -267,13 +342,17 @@ function printBinaryishExpressions(
           "right",
         )
       : print("right");
-    right = [
-      lineBeforeOperator ? line : "",
-      operator,
-      lineBeforeOperator ? " " : line,
-      rightContent,
-      rightSuffix,
-    ];
+    if (isJsxCondition) {
+      right = [rightContent, rightSuffix];
+    } else {
+      right = [
+        operatorPrefix,
+        operator,
+        operatorSuffix,
+        rightContent,
+        rightSuffix,
+      ];
+    }
   }
 
   // If there's only a single binary expression, we want to create a group
@@ -290,10 +369,21 @@ function printBinaryishExpressions(
       node.left.type !== node.type &&
       node.right.type !== node.type);
 
-  parts.push(
-    lineBeforeOperator ? "" : " ",
-    shouldGroup ? group(right, { shouldBreak }) : right,
-  );
+  if (isJsxCondition) {
+    const groupId = Symbol("jsxGroup");
+    parts.push(
+      indent(
+        group([line, group(right, { shouldBreak, id: groupId })]),
+        options.jsxTabWidth,
+      ),
+      ifBreak(hardline, "", { groupId }),
+    );
+  } else {
+    parts.push(
+      lineBeforeOperator ? "" : operatorSpacing ? " " : "",
+      shouldGroup ? group(right, { shouldBreak }) : right,
+    );
+  }
 
   // The root comments are already printed, but we need to manually print
   // the other ones since we don't call the normal print on BinaryExpression,

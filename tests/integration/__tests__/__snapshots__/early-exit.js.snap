@@ -47,6 +47,8 @@ Format options:
   --bracket-same-line      Put > of opening tags on the last line instead of on a new line.
                            Defaults to false.
   --no-bracket-spacing     Do not print spaces between brackets.
+  --brd-formatting         Use Brightdata formatting rules.
+                           Defaults to false.
   --embedded-language-formatting <auto|off>
                            Control how Prettier formats quoted code embedded in the file.
                            Defaults to auto.
@@ -213,6 +215,8 @@ Format options:
   --bracket-same-line      Put > of opening tags on the last line instead of on a new line.
                            Defaults to false.
   --no-bracket-spacing     Do not print spaces between brackets.
+  --brd-formatting         Use Brightdata formatting rules.
+                           Defaults to false.
   --embedded-language-formatting <auto|off>
                            Control how Prettier formats quoted code embedded in the file.
                            Defaults to auto.

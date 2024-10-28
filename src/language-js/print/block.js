@@ -30,6 +30,8 @@ function printBlock(path, options, print) {
     parts.push("static ");
   }
 
+  if (parent.type === "IfStatement" && options.brdFormatting)
+    parts.push(hardline);
   parts.push("{");
   if (bodyDoc) {
     parts.push(indent([hardline, bodyDoc]), hardline);

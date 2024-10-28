@@ -473,6 +473,10 @@ function maybeWrapJsxElementInParens(path, elem, options) {
     return elem;
   }
 
+  if (options.brdFormatting && !hasComment(path.node)) {
+    return elem;
+  }
+
   const shouldBreak = path.match(
     undefined,
     (node) => node.type === "ArrowFunctionExpression",
@@ -529,6 +533,7 @@ function printJsxAttribute(path, options, print) {
 
 function printJsxExpressionContainer(path, options, print) {
   const { node } = path;
+  const { brdFormatting } = options;
 
   const shouldInline = (node, parent) =>
     node.type === "JSXEmptyExpression" ||
@@ -549,7 +554,7 @@ function printJsxExpressionContainer(path, options, print) {
         (isJsxElement(parent) &&
           (node.type === "ConditionalExpression" || isBinaryish(node)))));
 
-  if (shouldInline(node.expression, path.parent)) {
+  if (brdFormatting || shouldInline(node.expression, path.parent)) {
     return group(["{", print("expression"), lineSuffixBoundary, "}"]);
   }
 
