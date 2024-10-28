@@ -7,6 +7,7 @@ import {
   join,
   line,
   softline,
+  hardline,
 } from "../../document/builders.js";
 import { removeLines, willBreak } from "../../document/utils.js";
 import {
@@ -156,7 +157,10 @@ function printArrowFunction(path, options, print, args = {}) {
         : signaturesDoc,
       { shouldBreak: shouldBreakSignatures, id: chainGroupId },
     ),
-    " =>",
+    options.brdFormatting ? "=>" : " =>",
+    options.brdFormatting
+      ? ifBreak(hardline, "", { groupId: chainGroupId })
+      : "",
     shouldPrintAsChain
       ? indentIfBreak(bodyDoc, { groupId: chainGroupId })
       : group(bodyDoc),
@@ -212,7 +216,8 @@ function printArrowFunctionSignature(path, options, print, args) {
     },
   });
   if (dangling) {
-    parts.push(" ", dangling);
+    // parts.push(" ", dangling);
+    parts.push(options.brdFormatting ? "" : " ", dangling);
   }
   return parts;
 }
@@ -314,7 +319,7 @@ function printArrowFunctionBody(
 
   if (shouldPutBodyOnSameLine && shouldAddParensIfNotBreak(functionBody)) {
     return [
-      " ",
+      options.brdFormatting ? "" : " ",
       group([
         ifBreak("", "("),
         indent([softline, bodyDoc]),
@@ -328,6 +333,12 @@ function printArrowFunctionBody(
 
   if (shouldAlwaysAddParens(functionBody)) {
     bodyDoc = group(["(", indent([softline, bodyDoc]), softline, ")"]);
+  }
+
+  if (options.brdFormatting) {
+    return shouldPutBodyOnSameLine
+      ? [bodyDoc, bodyComments]
+      : [bodyDoc, bodyComments, trailingComma, trailingSpace];
   }
 
   return shouldPutBodyOnSameLine
