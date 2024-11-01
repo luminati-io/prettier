@@ -1,0 +1,414 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`arrow_function.js - {"trailingComma":"es5","tabWidth":4,"jsxTabWidth":2,"semi":true,"singleQuote":true,"jsxSingleQuote":false,"printWidth":79,"bracketSpacing":false,"arrowParens":"avoid","brdFormatting":true} format 1`] = `
+====================================options=====================================
+arrowParens: "avoid"
+bracketSpacing: false
+brdFormatting: true
+jsxSingleQuote: false
+jsxTabWidth: 2
+parsers: ["babel"]
+printWidth: 79
+semi: true
+singleQuote: true
+tabWidth: 4
+trailingComma: "es5"
+                                                                               | printWidth
+=====================================input======================================
+const fn1 = () => 1;
+const fn2 = (v) => v + 1;
+const fn3 = (a, b) => a + b;
+const fn4 = (
+  long_param_a,
+  long_param_b,
+  long_param_c,
+  long_param_d,
+  long_param_e,
+) => {
+  return (
+    long_param_a + long_param_b + long_param_c + long_param_d + long_param_e
+  );
+};
+const a = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: "web" */
+      "./router.js"
+    ),
+);
+
+=====================================output=====================================
+const fn1 = ()=>1;
+const fn2 = v=>v + 1;
+const fn3 = (a, b)=>a + b;
+const fn4 = (
+    long_param_a,
+    long_param_b,
+    long_param_c,
+    long_param_d,
+    long_param_e
+)=>
+{
+    return (
+        long_param_a +
+        long_param_b +
+        long_param_c +
+        long_param_d +
+        long_param_e
+    );
+};
+const a = React.lazy(
+    ()=>import(
+        /* webpackChunkName: "web" */
+        './router.js'
+    )
+);
+
+================================================================================
+`;
+
+exports[`function.js - {"trailingComma":"es5","tabWidth":4,"jsxTabWidth":2,"semi":true,"singleQuote":true,"jsxSingleQuote":false,"printWidth":79,"bracketSpacing":false,"arrowParens":"avoid","brdFormatting":true} format 1`] = `
+====================================options=====================================
+arrowParens: "avoid"
+bracketSpacing: false
+brdFormatting: true
+jsxSingleQuote: false
+jsxTabWidth: 2
+parsers: ["babel"]
+printWidth: 79
+semi: true
+singleQuote: true
+tabWidth: 4
+trailingComma: "es5"
+                                                                               | printWidth
+=====================================input======================================
+function etask() {
+  return 1;
+}
+
+etask(function* (a, b, c) {
+  yield a();
+  yield b();
+  yield c();
+});
+
+function define(a, b) {
+  return b(a);
+}
+
+define(["a", "b", "c"], function (a, b, c) {
+  return a + b + c;
+});
+
+define(["long_param_a", "long_param_b", "long_param_c"], function (
+  long_param_a,
+  long_param_b,
+  long_param_c,
+) {
+  long_param_a();
+  long_param_b();
+  long_param_c();
+});
+
+=====================================output=====================================
+function etask(){
+    return 1;
+}
+
+etask(function*(a, b, c){
+    yield a();
+    yield b();
+    yield c();
+});
+
+function define(a, b){
+    return b(a);
+}
+
+define(['a', 'b', 'c'], function(a, b, c){
+    return a + b + c;
+});
+
+define(['long_param_a', 'long_param_b', 'long_param_c'], function(
+    long_param_a,
+    long_param_b,
+    long_param_c
+)
+{
+    long_param_a();
+    long_param_b();
+    long_param_c();
+});
+
+================================================================================
+`;
+
+exports[`jsx.js - {"trailingComma":"es5","tabWidth":4,"jsxTabWidth":2,"semi":true,"singleQuote":true,"jsxSingleQuote":false,"printWidth":79,"bracketSpacing":false,"arrowParens":"avoid","brdFormatting":true} format 1`] = `
+====================================options=====================================
+arrowParens: "avoid"
+bracketSpacing: false
+brdFormatting: true
+jsxSingleQuote: false
+jsxTabWidth: 2
+parsers: ["babel"]
+printWidth: 79
+semi: true
+singleQuote: true
+tabWidth: 4
+trailingComma: "es5"
+                                                                               | printWidth
+=====================================input======================================
+function Component() {
+  const comp = (
+    <div>
+      <p>some content</p>
+      <p>some content</p>
+      <p>some content</p>
+    </div>
+  );
+  return (
+    // comment
+    <section>{comp}</section>
+  );
+}
+
+<Component param_1="param1" param_2={2} param_3={\`\`} param_4={{}} />;
+<Component
+  long_param_1="param1"
+  long_param_2={2}
+  long_param_3={\`\`}
+  long_param_4={{}}
+/>;
+
+=====================================output=====================================
+function Component(){
+    const comp = <div>
+      <p>some content</p>
+      <p>some content</p>
+      <p>some content</p>
+    </div>;
+    return (
+      // comment
+      <section>{comp}</section>
+    );
+}
+
+<Component param_1="param1" param_2={2} param_3={\`\`} param_4={{}} />;
+<Component
+  long_param_1="param1"
+  long_param_2={2}
+  long_param_3={\`\`}
+  long_param_4={{}}
+/>;
+
+================================================================================
+`;
+
+exports[`logical_expression.js - {"trailingComma":"es5","tabWidth":4,"jsxTabWidth":2,"semi":true,"singleQuote":true,"jsxSingleQuote":false,"printWidth":79,"bracketSpacing":false,"arrowParens":"avoid","brdFormatting":true} format 1`] = `
+====================================options=====================================
+arrowParens: "avoid"
+bracketSpacing: false
+brdFormatting: true
+jsxSingleQuote: false
+jsxTabWidth: 2
+parsers: ["babel"]
+printWidth: 79
+semi: true
+singleQuote: true
+tabWidth: 4
+trailingComma: "es5"
+                                                                               | printWidth
+=====================================input======================================
+var a = (b && c) || (d && e);
+
+=====================================output=====================================
+var a = b && c || d && e;
+
+================================================================================
+`;
+
+exports[`statement.js - {"trailingComma":"es5","tabWidth":4,"jsxTabWidth":2,"semi":true,"singleQuote":true,"jsxSingleQuote":false,"printWidth":79,"bracketSpacing":false,"arrowParens":"avoid","brdFormatting":true} format 1`] = `
+====================================options=====================================
+arrowParens: "avoid"
+bracketSpacing: false
+brdFormatting: true
+jsxSingleQuote: false
+jsxTabWidth: 2
+parsers: ["babel"]
+printWidth: 79
+semi: true
+singleQuote: true
+tabWidth: 4
+trailingComma: "es5"
+                                                                               | printWidth
+=====================================input======================================
+try {
+  a();
+} catch (e) {
+  c(e);
+}
+
+switch (a) {
+  case 1:
+    break;
+  default:
+    break;
+}
+
+for (;;) {
+  // XXX single line not supported yet
+  break;
+}
+for (
+  let very_long_for_variable = 22;
+  very_long_for_variable < Number.MAX_VALUE;
+  very_long_for_variable = very_long_for_variable + 1
+) {
+  long_module_a(very_long_for_variable);
+  break;
+}
+
+for (const n of [1, 2]) {
+  // comment
+  n();
+}
+for (const [k, v] of [
+  [1, 2],
+  [3, 4],
+]) {
+  const r = v(k);
+  r();
+}
+
+for (const n in { a: 1, b: 2 }) {
+  // comment
+  n();
+}
+for (const n in { a: 1, b: 2 }) {
+  n(); // comment
+}
+
+let p = 1;
+while (p) {
+  // XXX single line not supported yet
+  p -= 1;
+}
+while (p < 1) {
+  p *= 2;
+  p += 1;
+}
+
+if (1) {
+  // comment
+  a();
+} else {
+  b();
+  c();
+}
+if (0) a();
+else b();
+if (1) {
+  // comment
+  c();
+} else {
+  d(); // comment
+}
+if (a) c();
+else if (b) b();
+
+=====================================output=====================================
+try {
+    a();
+} catch(e){
+    c(e);
+}
+
+switch (a)
+{
+    case 1:
+        break;
+    default:
+        break;
+}
+
+for (;;)
+{
+    // XXX single line not supported yet
+    break;
+}
+for (
+    let very_long_for_variable = 22;
+    very_long_for_variable < Number.MAX_VALUE;
+    very_long_for_variable = very_long_for_variable + 1
+)
+{
+    long_module_a(very_long_for_variable);
+    break;
+}
+
+for (const n of [1, 2])
+{
+    // comment
+    n();
+}
+for (const [k, v] of [
+    [1, 2],
+    [3, 4],
+])
+{
+    const r = v(k);
+    r();
+}
+
+for (const n in {a: 1, b: 2})
+{
+    // comment
+    n();
+}
+for (const n in {a: 1, b: 2})
+{
+    n(); // comment
+}
+
+let p = 1;
+while (p)
+{
+    // XXX single line not supported yet
+    p -= 1;
+}
+while (p < 1)
+{
+    p *= 2;
+    p += 1;
+}
+
+if (1)
+{
+    // comment
+    a();
+}
+else
+{
+    b();
+    c();
+}
+if (0)
+    a();
+else
+    b();
+if (1)
+{
+    // comment
+    c();
+}
+else
+{
+    d(); // comment
+}
+if (a)
+    c();
+else if (b)
+    b();
+
+================================================================================
+`;
