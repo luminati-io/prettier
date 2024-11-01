@@ -1,0 +1,1349 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`arrow-function.js - {"trailingComma":"es5","tabWidth":4,"jsxTabWidth":2,"semi":true,"singleQuote":true,"jsxSingleQuote":false,"printWidth":79,"bracketSpacing":false,"arrowParens":"avoid","brdFormatting":true} format 1`] = `
+====================================options=====================================
+arrowParens: "avoid"
+bracketSpacing: false
+brdFormatting: true
+jsxSingleQuote: false
+jsxTabWidth: 2
+parsers: ["babel"]
+printWidth: 79
+semi: true
+singleQuote: true
+tabWidth: 4
+trailingComma: "es5"
+                                                                               | printWidth
+=====================================input======================================
+const fn1 = () => 1;
+const fn2 = (v) => v + 1;
+const fn3 = (a, b) => a + b;
+const fn4 = (a) => (b) => a + b;
+const fn5 = (
+  long_param_a,
+  long_param_b,
+  long_param_c,
+  long_param_d,
+  long_param_e,
+  long_param_f,
+) => {
+  return (
+    long_param_a +
+    long_param_b +
+    long_param_c +
+    long_param_d +
+    long_param_e +
+    long_param_f
+  );
+};
+const a = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: "web" */
+      "./router.js"
+    ),
+);
+const b = (p) => (p.condition ? "true" : "false");
+b(
+  { p: 1 },
+  () => (c = null),
+  () => (e) => {
+    b(e);
+  },
+);
+useEffect(() => {
+  // do something
+}, [a, b]);
+useCallback((b, c) => {
+  // do something
+}, []);
+
+=====================================output=====================================
+const fn1 = ()=>1;
+const fn2 = v=>v+1;
+const fn3 = (a, b)=>a+b;
+const fn4 = a=>b=>a+b;
+const fn5 = (long_param_a, long_param_b, long_param_c, long_param_d,
+    long_param_e, long_param_f)=>
+{
+    return (
+        long_param_a+
+        long_param_b+
+        long_param_c+
+        long_param_d+
+        long_param_e+
+        long_param_f
+    );
+};
+const a = React.lazy(()=>import(/* webpackChunkName: "web" */
+'./router.js'));
+const b = p=>p.condition ? 'true' : 'false';
+b({p: 1}, ()=>c = null,
+    ()=>e=>{
+        b(e);
+    });
+useEffect(()=>{
+    // do something
+}, [a, b]);
+useCallback((b, c)=>{
+    // do something
+}, []);
+
+================================================================================
+`;
+
+exports[`call-arguments.js - {"trailingComma":"es5","tabWidth":4,"jsxTabWidth":2,"semi":true,"singleQuote":true,"jsxSingleQuote":false,"printWidth":79,"bracketSpacing":false,"arrowParens":"avoid","brdFormatting":true} format 1`] = `
+====================================options=====================================
+arrowParens: "avoid"
+bracketSpacing: false
+brdFormatting: true
+jsxSingleQuote: false
+jsxTabWidth: 2
+parsers: ["babel"]
+printWidth: 79
+semi: true
+singleQuote: true
+tabWidth: 4
+trailingComma: "es5"
+                                                                               | printWidth
+=====================================input======================================
+// https://brightdata.com/dna/js_code#format-block-break_line
+console.log(
+  "this is a test section that will show how to handle " +
+    "long lines, such as this one which is 2 lines long",
+);
+console.log(
+  "this is a test section that will show how",
+  " to handle long lines, such as this one which is 2 lines long",
+);
+console.log(
+  "this is a test section",
+  " that will show how",
+  " to handle long lines, such as this one which is 2 lines long",
+  "this is a test section",
+  " that will show how",
+  " to handle long lines, such as this one which is 2 lines long",
+);
+
+=====================================output=====================================
+// https://brightdata.com/dna/js_code#format-block-break_line
+console.log('this is a test section that will show how to handle '
+    +'long lines, such as this one which is 2 lines long');
+console.log('this is a test section that will show how',
+    ' to handle long lines, such as this one which is 2 lines long');
+console.log('this is a test section', ' that will show how',
+    ' to handle long lines, such as this one which is 2 lines long',
+    'this is a test section', ' that will show how',
+    ' to handle long lines, such as this one which is 2 lines long');
+
+================================================================================
+`;
+
+exports[`dna.js - {"trailingComma":"es5","tabWidth":4,"jsxTabWidth":2,"semi":true,"singleQuote":true,"jsxSingleQuote":false,"printWidth":79,"bracketSpacing":false,"arrowParens":"avoid","brdFormatting":true} format 1`] = `
+====================================options=====================================
+arrowParens: "avoid"
+bracketSpacing: false
+brdFormatting: true
+jsxSingleQuote: false
+jsxTabWidth: 2
+parsers: ["babel"]
+printWidth: 79
+semi: true
+singleQuote: true
+tabWidth: 4
+trailingComma: "es5"
+                                                                               | printWidth
+=====================================input======================================
+// https://brightdata.com/dna/js_code#overview-text_layout
+open_msg_box(
+  "closing file %s on server...........................\\n",
+  file_name,
+);
+
+// https://brightdata.com/dna/js_code#format-block-if_for_while-block
+if (pkt) {
+  pkt.close();
+  pkt.uninit();
+}
+if (
+  slot.dw_bus == pci_scan.card_slot[ret].dw_bus &&
+  slot.dw_slot == pci_scan.card_slot[ret].dw_slot &&
+  slot.dw_function == pci_scan.card_slot[ret].dw_function
+) {
+  x = y;
+}
+if (x == y) {
+  my_func(
+    param1,
+    param2,
+    param3,
+    param4,
+    param5,
+    param6,
+    param7,
+    param8,
+    param9,
+  );
+}
+for (ret = 0; ret < pci_scan.dw_cards; ret++) {
+  if (
+    slot.dw_bus == pci_scan.card_slot[ret].dw_bus &&
+    slot.dw_slot == pci_scan.card_slot[ret].dw_slot &&
+    slot.dw_function == pci_scan.card_slot[ret].dw_function
+  ) {
+    break;
+  }
+}
+
+// https://brightdata.com/dna/js_code#format-if_for_while-no_statement
+while (pop_first(list));
+for (i = 0; i < 10; i++);
+if (a > b + 10);
+else if (a > b + 5) do_x();
+else if (a > b + 2);
+else do_y();
+
+// https://brightdata.com/dna/js_code#format-block-then
+if (close_file) fclose(fp);
+
+// https://brightdata.com/dna/js_code#format-block-else_if
+if (argv[1] === "--help") print_usage();
+else if (argv[1] === "--run") {
+  run_application();
+  print_results();
+} else print_error();
+
+// https://brightdata.com/dna/js_code#format-block-func
+let tiny = function () {
+  code;
+};
+function tiny() {
+  code;
+}
+function long(args) {
+  code;
+  code;
+}
+function long_args(
+  param1,
+  param2,
+  param3,
+  param4,
+  param5,
+  param6,
+  param7,
+  param8,
+  param9,
+) {
+  code;
+  code;
+}
+
+// https://brightdata.com/dna/js_code#format-block-func-inline
+let x = parse_args(...args, function (line) {
+  let escaped = E.escape(line);
+  // ...
+});
+let x1 = parse_args(
+  param_a,
+  param_b,
+  param_c,
+  param_d,
+  param_e,
+  function (line, err) {
+    let escaped = E.escape(line);
+    // ...
+  },
+);
+
+// https://brightdata.com/dna/js_code#format-block-func-spacing
+printf("hello %s\\n", "world");
+
+// https://brightdata.com/dna/js_code#format-block-break_line
+if (
+  line_length > 1000 &&
+  (screen.sz.vertical < buffer.sz.vertical || explicit_lines)
+) {
+  console.log(
+    "this is a test section that will show how to handle " +
+      "long lines, such as this one which is 2 lines long",
+  );
+}
+
+// https://brightdata.com/dna/js_code#format-block-switch
+switch (key) {
+  case KEY_UP:
+    key = UP;
+    break;
+  case KEY_DOWN:
+    key = DN;
+    break;
+  default:
+    key = NONE;
+}
+
+// https://brightdata.com/dna/js_code#format-block-try_catch
+try {
+  short_code;
+} catch (e) {
+  code;
+}
+try {
+  and_even;
+  longer_code;
+} catch (e) {
+  code;
+}
+
+//https://brightdata.com/dna/js_code#format-block-operator
+if (x > 5);
+if (f(x, y) > g(y, z));
+if (x.y == 5);
+if (x.y >= 5);
+if (!a && a.b);
+if (a && Array.isArray(a));
+
+// https://brightdata.com/dna/js_code#format-block-operator-assign
+a = b;
+d += x;
+for (i = 0; i < 10; i += 4);
+
+// https://brightdata.com/dna/js_code#format-block-operator-unary
+i--;
+j++;
+if (!i);
+let speed_int = +speed_str;
+
+// https://brightdata.com/dna/js_code#format-block-operator-multi
+msg = "hello " + name + "!";
+msg = "hello " + get_my_name() + "!";
+
+// https://brightdata.com/dna/js_code#format-block-operator-cond
+let msg = login_ok ? "Welcome" : "Please login";
+let result = a_very_long_condition_expression
+  ? "true branch......."
+  : "false branch.......";
+
+// https://brightdata.com/dna/js_code#format-minimal-unneeded_parentheses
+if (a != b || c != d);
+
+// https://brightdata.com/dna/js_code#format-long_string
+msg =
+  "this ................................................." +
+  "is a long string.";
+let object = {
+  field:
+    "this ................................................." +
+    "is a long string",
+};
+
+// https://brightdata.com/dna/js_code#format-file_lvl_closure
+/*
+(function($, chrome, console){
+
+code;
+code;
+
+})(jQuery, chrome, console);
+*/
+(function ($, chrome, console) {
+  code;
+  code;
+})(jQuery, chrome, console);
+
+// https://brightdata.com/dna/js_code#format-loop-do_while
+do add_item();
+while (have_items);
+do add_item();
+while (have_items);
+do {
+  add_item();
+  another_action();
+} while (have_items);
+
+// https://brightdata.com/dna/js_code#format-object
+let node = {
+  name: "server",
+  port: 42,
+  status: "updated",
+  setup_time: 10 * 1000,
+};
+let node1 = { name: "server", port: 42 };
+
+// https://brightdata.com/dna/js_code#format-continuation_method
+/*
+$('<h1>', $('<div>')
+    .append('<span>'));
+*/
+$("<h1........................>", $("<div>").append("<span>"));
+/*
+let elm = $('<span>')
+.append('<span>');
+*/
+let elm = $("<span ........................................>").append(
+  "<span ........................................>",
+);
+/*
+return $('<div>')
+.append('<span>');
+*/
+return $("<div> ........................................").append(
+  "<span ........................................>",
+);
+
+// https://brightdata.com/dna/js_code#format-function_classes
+function Etask(opt, states) {
+  // ...
+}
+
+// https://brightdata.com/dna/js_code#format-es6-arrow
+docs.forEach((doc) => add(doc));
+docs.forEach((doc, index) => {
+  if (index) add(doc, index);
+});
+
+// https://brightdata.com/dna/js_code#format-es6-generator
+etask(function* () {
+  // ...
+});
+etask(function* get_request() {
+  //...
+});
+
+// https://brightdata.com/dna/js_code#format-es6-class-etask
+class A {
+  prop() {
+    return etask(function* () {
+      code;
+    });
+  }
+}
+/*
+class A {
+    prop(){
+        let _this = this;
+    return etask(function*(){
+        code;
+    }); }
+}
+*/
+class A {
+  prop() {
+    let _this = this;
+    return etask(function* () {
+      code;
+    });
+  }
+}
+
+// https://brightdata.com/dna/js_code#luminati-react-jsx
+// https://brightdata.com/dna/js_code#luminati-react-jsx-indentation
+return <View></View>;
+return (
+  <View>
+    <Button />
+  </View>
+);
+
+// https://brightdata.com/dna/js_code#luminati-react-jsx-conditional
+return <View>{show_panel && <Panel with="a short" prop />}</View>;
+return (
+  <View>
+    {show_panel && (
+      <Panel with="a .......... couple" but="short .......... props" />
+    )}
+  </View>
+);
+return (
+  <div>
+    {show_panel && (
+      <Panel
+        with="lots .......... and .......... lots"
+        of="props .......... that"
+        take="multiple .......... lines"
+      />
+    )}
+  </div>
+);
+return <View>{show ? <Panel_a /> : <Panel_b />}</View>;
+return (
+  <View>
+    {show_panel_a ? (
+      <Panel_a enabled={enabled} />
+    ) : (
+      <Panel_b enabled={enabled} display_controls={!display_login} />
+    )}
+  </View>
+);
+return (
+  <View>
+    {show_panel_a ? (
+      <Panel_a
+        enabled={enabled}
+        display_controls={!display_login_over}
+        header_name={customer.name || session.customer}
+        echo={echo}
+      />
+    ) : (
+      <Panel_b
+        enabled={enabled}
+        display_controls={!display_login_over}
+        header_name={customer.name || session.customer}
+        echo={echo}
+      />
+    )}
+  </View>
+);
+
+=====================================output=====================================
+// https://brightdata.com/dna/js_code#overview-text_layout
+open_msg_box('closing file %s on server...........................\\n',
+    file_name);
+
+// https://brightdata.com/dna/js_code#format-block-if_for_while-block
+if (pkt)
+{
+    pkt.close();
+    pkt.uninit();
+}
+if (slot.dw_bus==pci_scan.card_slot[ret].dw_bus &&
+    slot.dw_slot==pci_scan.card_slot[ret].dw_slot &&
+    slot.dw_function==pci_scan.card_slot[ret].dw_function)
+{
+    x = y;
+}
+if (x==y)
+{
+    my_func(param1, param2, param3, param4, param5, param6, param7, param8,
+        param9);
+}
+for (ret = 0; ret<pci_scan.dw_cards; ret++)
+{
+    if (slot.dw_bus==pci_scan.card_slot[ret].dw_bus &&
+        slot.dw_slot==pci_scan.card_slot[ret].dw_slot &&
+        slot.dw_function==pci_scan.card_slot[ret].dw_function)
+    {
+        break;
+    }
+}
+
+// https://brightdata.com/dna/js_code#format-if_for_while-no_statement
+while (pop_first(list));
+for (i = 0; i<10; i++);
+if (a>b+10);
+else if (a>b+5)
+    do_x();
+else if (a>b+2);
+else
+    do_y();
+
+// https://brightdata.com/dna/js_code#format-block-then
+if (close_file)
+    fclose(fp);
+
+// https://brightdata.com/dna/js_code#format-block-else_if
+if (argv[1]==='--help')
+    print_usage();
+else if (argv[1]==='--run')
+{
+    run_application();
+    print_results();
+}
+else
+    print_error();
+
+// https://brightdata.com/dna/js_code#format-block-func
+let tiny = function(){
+    code;
+};
+function tiny(){
+    code;
+}
+function long(args){
+    code;
+    code;
+}
+function long_args(param1, param2, param3, param4, param5, param6, param7,
+    param8, param9)
+{
+    code;
+    code;
+}
+
+// https://brightdata.com/dna/js_code#format-block-func-inline
+let x = parse_args(...args, function(line){
+        let escaped = E.escape(line);
+        // ...
+    });
+let x1 = parse_args(param_a, param_b, param_c, param_d, param_e,
+    function(line, err){
+        let escaped = E.escape(line);
+        // ...
+    });
+
+// https://brightdata.com/dna/js_code#format-block-func-spacing
+printf('hello %s\\n', 'world');
+
+// https://brightdata.com/dna/js_code#format-block-break_line
+if (line_length>1000 &&
+    (screen.sz.vertical<buffer.sz.vertical || explicit_lines))
+{
+    console.log('this is a test section that will show how to handle '
+        +'long lines, such as this one which is 2 lines long');
+}
+
+// https://brightdata.com/dna/js_code#format-block-switch
+switch (key)
+{
+case KEY_UP:
+    key = UP;
+    break;
+case KEY_DOWN:
+    key = DN;
+    break;
+default:
+    key = NONE;
+}
+
+// https://brightdata.com/dna/js_code#format-block-try_catch
+try {
+    short_code;
+} catch(e){
+    code;
+}
+try {
+    and_even;
+    longer_code;
+} catch(e){
+    code;
+}
+
+//https://brightdata.com/dna/js_code#format-block-operator
+if (x>5);
+if (f(x, y)>g(y, z));
+if (x.y==5);
+if (x.y>=5);
+if (!a && a.b);
+if (a && Array.isArray(a));
+
+// https://brightdata.com/dna/js_code#format-block-operator-assign
+a = b;
+d += x;
+for (i = 0; i<10; i += 4);
+
+// https://brightdata.com/dna/js_code#format-block-operator-unary
+i--;
+j++;
+if (!i);
+let speed_int = +speed_str;
+
+// https://brightdata.com/dna/js_code#format-block-operator-multi
+msg = 'hello '+name+'!';
+msg = 'hello '+get_my_name()+'!';
+
+// https://brightdata.com/dna/js_code#format-block-operator-cond
+let msg = login_ok ? 'Welcome' : 'Please login';
+let result = a_very_long_condition_expression
+    ? 'true branch.......' : 'false branch.......';
+
+// https://brightdata.com/dna/js_code#format-minimal-unneeded_parentheses
+if (a!=b || c!=d);
+
+// https://brightdata.com/dna/js_code#format-long_string
+msg = 'this .................................................'
++'is a long string.';
+let object = {
+    field: 'this .................................................'
+    +'is a long string',
+};
+
+// https://brightdata.com/dna/js_code#format-file_lvl_closure
+/*
+(function($, chrome, console){
+
+code;
+code;
+
+})(jQuery, chrome, console);
+*/
+(function($, chrome, console){
+    code;
+    code;
+})(jQuery, chrome, console);
+
+// https://brightdata.com/dna/js_code#format-loop-do_while
+do
+    add_item();
+while (have_items);
+do
+    add_item();
+while (have_items);
+do{
+    add_item();
+    another_action();
+}
+while (have_items);
+
+// https://brightdata.com/dna/js_code#format-object
+let node = {
+    name: 'server',
+    port: 42,
+    status: 'updated',
+    setup_time: 10*1000,
+};
+let node1 = {name: 'server', port: 42};
+
+// https://brightdata.com/dna/js_code#format-continuation_method
+/*
+$('<h1>', $('<div>')
+    .append('<span>'));
+*/
+$('<h1........................>', $('<div>').append('<span>'));
+/*
+let elm = $('<span>')
+.append('<span>');
+*/
+let elm =
+    $('<span ........................................>').append('<span ........................................>');
+/*
+return $('<div>')
+.append('<span>');
+*/
+return $('<div> ........................................').append('<span ........................................>');
+
+// https://brightdata.com/dna/js_code#format-function_classes
+function Etask(opt, states){
+    // ...
+}
+
+// https://brightdata.com/dna/js_code#format-es6-arrow
+docs.forEach(doc=>add(doc));
+docs.forEach((doc, index)=>{
+    if (index)
+        add(doc, index);
+});
+
+// https://brightdata.com/dna/js_code#format-es6-generator
+etask(function*(){
+    // ...
+});
+etask(function*get_request(){
+    //...
+});
+
+// https://brightdata.com/dna/js_code#format-es6-class-etask
+class A {
+    prop(){
+        return etask(function*(){
+            code;
+        });
+    }
+}
+/*
+class A {
+    prop(){
+        let _this = this;
+    return etask(function*(){
+        code;
+    }); }
+}
+*/
+class A {
+    prop(){
+        let _this = this;
+        return etask(function*(){
+            code;
+        });
+    }
+}
+
+// https://brightdata.com/dna/js_code#luminati-react-jsx
+// https://brightdata.com/dna/js_code#luminati-react-jsx-indentation
+return <View></View>;
+return <View>
+  <Button />
+</View>;
+
+// https://brightdata.com/dna/js_code#luminati-react-jsx-conditional
+return <View>
+  {show_panel && <Panel with="a short" prop />}
+</View>;
+return <View>
+  {show_panel &&
+    <Panel with="a .......... couple" but="short .......... props" />}
+</View>;
+return <div>
+  {show_panel &&
+    <Panel
+      with="lots .......... and .......... lots"
+      of="props .......... that"
+      take="multiple .......... lines"
+    />
+  }
+</div>;
+return <View>
+  {show ? <Panel_a /> : <Panel_b />}
+</View>;
+return <View>
+  {show_panel_a
+    ? <Panel_a enabled={enabled} />
+    : <Panel_b enabled={enabled} display_controls={!display_login} />
+  }
+</View>;
+return <View>
+  {show_panel_a
+    ? <Panel_a
+        enabled={enabled}
+        display_controls={!display_login_over}
+        header_name={customer.name || session.customer}
+        echo={echo}
+      />
+    : <Panel_b
+        enabled={enabled}
+        display_controls={!display_login_over}
+        header_name={customer.name || session.customer}
+        echo={echo}
+      />
+  }
+</View>;
+
+================================================================================
+`;
+
+exports[`expression.js - {"trailingComma":"es5","tabWidth":4,"jsxTabWidth":2,"semi":true,"singleQuote":true,"jsxSingleQuote":false,"printWidth":79,"bracketSpacing":false,"arrowParens":"avoid","brdFormatting":true} format 1`] = `
+====================================options=====================================
+arrowParens: "avoid"
+bracketSpacing: false
+brdFormatting: true
+jsxSingleQuote: false
+jsxTabWidth: 2
+parsers: ["babel"]
+printWidth: 79
+semi: true
+singleQuote: true
+tabWidth: 4
+trailingComma: "es5"
+                                                                               | printWidth
+=====================================input======================================
+var a = (b && c) || (d && e);
+let a = [...(b || []), ...c];
+const b = (2 * x) / w;
+const c = true && (a * b) / c + 1 - 2;
+const d = 1 == 2 || 1 != 3;
+const very_long_variable1 =
+  very_long_condition_variable1 == very_long_condition_variable2;
+const very_long_variable2 =
+  "this is a test section that will show how to handle " +
+  "long lines, such as this one which is 2 lines long";
+const e = 1 > 2 || 3 < 4 || 2 <= 3 || 4 >= 1;
+const f = e instanceof Error;
+const g = a in b;
+
+=====================================output=====================================
+var a = b && c || d && e;
+let a = [...b || [], ...c];
+const b = 2*x/w;
+const c = true && a*b/c+1-2;
+const d = 1==2 || 1!=3;
+const very_long_variable1 = very_long_condition_variable1==
+    very_long_condition_variable2;
+const very_long_variable2 = 'this is a test section that will show how to handle '
++'long lines, such as this one which is 2 lines long';
+const e = 1>2 || 3<4 || 2<=3 || 4>=1;
+const f = e instanceof Error;
+const g = a in b;
+
+================================================================================
+`;
+
+exports[`function.js - {"trailingComma":"es5","tabWidth":4,"jsxTabWidth":2,"semi":true,"singleQuote":true,"jsxSingleQuote":false,"printWidth":79,"bracketSpacing":false,"arrowParens":"avoid","brdFormatting":true} format 1`] = `
+====================================options=====================================
+arrowParens: "avoid"
+bracketSpacing: false
+brdFormatting: true
+jsxSingleQuote: false
+jsxTabWidth: 2
+parsers: ["babel"]
+printWidth: 79
+semi: true
+singleQuote: true
+tabWidth: 4
+trailingComma: "es5"
+                                                                               | printWidth
+=====================================input======================================
+function etask() {
+  return 1;
+}
+
+etask(function* (a) {
+  yield a();
+});
+etask(function* _fn(a) {
+  yield a();
+});
+
+function define(a, b) {
+  return b(a);
+}
+
+define(["a", "b", "c"], function (a, b, c) {
+  return a + b + c;
+});
+
+define(["long_param_a", "long_param_b", "long_param_c"], function (
+  long_param_a,
+  long_param_b,
+  long_param_c,
+) {
+  long_param_a();
+  long_param_b();
+  long_param_c();
+});
+
+=====================================output=====================================
+function etask(){
+    return 1;
+}
+
+etask(function*(a){
+    yield a();
+});
+etask(function*_fn(a){
+    yield a();
+});
+
+function define(a, b){
+    return b(a);
+}
+
+define(['a', 'b', 'c'], function(a, b, c){
+    return a+b+c;
+});
+
+define(['long_param_a', 'long_param_b', 'long_param_c'], function(long_param_a,
+    long_param_b, long_param_c)
+{
+    long_param_a();
+    long_param_b();
+    long_param_c();
+});
+
+================================================================================
+`;
+
+exports[`jsx.js - {"trailingComma":"es5","tabWidth":4,"jsxTabWidth":2,"semi":true,"singleQuote":true,"jsxSingleQuote":false,"printWidth":79,"bracketSpacing":false,"arrowParens":"avoid","brdFormatting":true} format 1`] = `
+====================================options=====================================
+arrowParens: "avoid"
+bracketSpacing: false
+brdFormatting: true
+jsxSingleQuote: false
+jsxTabWidth: 2
+parsers: ["babel"]
+printWidth: 79
+semi: true
+singleQuote: true
+tabWidth: 4
+trailingComma: "es5"
+                                                                               | printWidth
+=====================================input======================================
+function Component() {
+  const comp = (
+    <div>
+      <p>some content</p>
+      <p>some content</p>
+      <p>some content</p>
+    </div>
+  );
+  return (
+    // comment
+    <section>{comp}</section>
+  );
+}
+<Component param_1="param1" param_2={2} param_3={\`\`} param_4={{}} />;
+<Component
+  long_param_1="param1"
+  long_param_2={2}
+  long_param_3={\`\`}
+  long_param_4={{}}
+/>;
+<Component
+  prop={
+    <Component_2 className="class-1 class-2 class-3 class-4 class-5" disabled />
+  }
+/>;
+
+=====================================output=====================================
+function Component(){
+    const comp = <div>
+      <p>some content</p>
+      <p>some content</p>
+      <p>some content</p>
+    </div>;
+    return (
+      // comment
+      <section>{comp}</section>
+    );
+}
+<Component param_1="param1" param_2={2} param_3={\`\`} param_4={{}} />;
+<Component
+  long_param_1="param1"
+  long_param_2={2}
+  long_param_3={\`\`}
+  long_param_4={{}}
+/>;
+<Component
+  prop={<Component_2
+    className="class-1 class-2 class-3 class-4 class-5"
+    disabled
+  />}
+/>;
+
+================================================================================
+`;
+
+exports[`statement.js - {"trailingComma":"es5","tabWidth":4,"jsxTabWidth":2,"semi":true,"singleQuote":true,"jsxSingleQuote":false,"printWidth":79,"bracketSpacing":false,"arrowParens":"avoid","brdFormatting":true} format 1`] = `
+====================================options=====================================
+arrowParens: "avoid"
+bracketSpacing: false
+brdFormatting: true
+jsxSingleQuote: false
+jsxTabWidth: 2
+parsers: ["babel"]
+printWidth: 79
+semi: true
+singleQuote: true
+tabWidth: 4
+trailingComma: "es5"
+                                                                               | printWidth
+=====================================input======================================
+try {
+  a();
+} catch (e) {
+  c(e);
+}
+
+switch (a) {
+  case 1:
+    break;
+  default:
+    break;
+}
+
+for (;;) break;
+for (
+  let very_long_for_variable = 22;
+  very_long_for_variable < Number.MAX_VALUE;
+  very_long_for_variable = very_long_for_variable + 1
+) {
+  long_module_a(very_long_for_variable);
+  break;
+}
+
+for (const n of [1, 2]) n();
+for (const n of [1, 2]) {
+  // comment
+  n();
+}
+for (const [k, v] of [
+  [1, 2],
+  [3, 4],
+]) {
+  const r = v(k);
+  r();
+}
+
+for (const n in { a: 1, b: 2 }) n();
+for (const n in { a: 1, b: 2 }) {
+  // comment
+  n();
+}
+for (const n in { a: 1, b: 2 }) {
+  n(); // comment
+}
+
+while (1) a -= 1;
+while ((a += 1)) a -= 1;
+while (a < 1) {
+  a *= 2;
+  a += 1;
+}
+
+if (0) a();
+else b();
+if (1) {
+  // comment
+  a();
+} else {
+  b();
+  c();
+}
+if (1) {
+  // comment
+  c();
+} else {
+  d(); // comment
+}
+if ((a = b)) a();
+if (first_variable > 1 || second_variable > 1) a();
+if (
+  first_variable > 1 &&
+  (second_variable < third_variable || second_variable > forth_variable)
+) {
+  a();
+}
+if (
+  first_variable >
+    very_very_very_very_very_very_very_very_long_second_variable &&
+  (second_variable < third_variable || second_variable > forth_variable)
+) {
+  a();
+}
+
+=====================================output=====================================
+try {
+    a();
+} catch(e){
+    c(e);
+}
+
+switch (a)
+{
+case 1:
+    break;
+default:
+    break;
+}
+
+for (;;)
+    break;
+for (
+    let very_long_for_variable = 22;
+    very_long_for_variable<Number.MAX_VALUE;
+    very_long_for_variable = very_long_for_variable+1
+)
+{
+    long_module_a(very_long_for_variable);
+    break;
+}
+
+for (const n of [1, 2])
+    n();
+for (const n of [1, 2])
+{
+    // comment
+    n();
+}
+for (const [k, v] of [
+    [1, 2],
+    [3, 4],
+])
+{
+    const r = v(k);
+    r();
+}
+
+for (const n in {a: 1, b: 2})
+    n();
+for (const n in {a: 1, b: 2})
+{
+    // comment
+    n();
+}
+for (const n in {a: 1, b: 2})
+{
+    n(); // comment
+}
+
+while (1)
+    a -= 1;
+while (a += 1)
+    a -= 1;
+while (a<1)
+{
+    a *= 2;
+    a += 1;
+}
+
+if (0)
+    a();
+else
+    b();
+if (1)
+{
+    // comment
+    a();
+}
+else
+{
+    b();
+    c();
+}
+if (1)
+{
+    // comment
+    c();
+}
+else
+{
+    d(); // comment
+}
+if (a = b)
+    a();
+if (first_variable>1 || second_variable>1)
+    a();
+if (first_variable>1 &&
+    (second_variable<third_variable || second_variable>forth_variable))
+{
+    a();
+}
+if (first_variable>very_very_very_very_very_very_very_very_long_second_variable &&
+    (second_variable<third_variable || second_variable>forth_variable))
+{
+    a();
+}
+
+================================================================================
+`;
+
+exports[`ternary.js - {"trailingComma":"es5","tabWidth":4,"jsxTabWidth":2,"semi":true,"singleQuote":true,"jsxSingleQuote":false,"printWidth":79,"bracketSpacing":false,"arrowParens":"avoid","brdFormatting":true} format 1`] = `
+====================================options=====================================
+arrowParens: "avoid"
+bracketSpacing: false
+brdFormatting: true
+jsxSingleQuote: false
+jsxTabWidth: 2
+parsers: ["babel"]
+printWidth: 79
+semi: true
+singleQuote: true
+tabWidth: 4
+trailingComma: "es5"
+                                                                               | printWidth
+=====================================input======================================
+var ternary_operator_result_a = 1 ? 10 : 20;
+var ternary_operator_result_b =
+  ternary_operator_result_a > ternary_operator_result_a + 1 ? (
+    <div>true condition</div>
+  ) : (
+    <div>
+      <p>false condition</p>
+      <p>false condition</p>
+      <p>false condition</p>
+    </div>
+  );
+var ternary_operator_result_c =
+  ternary_operator_result_b + ternary_operator_result_a
+    ? call_very_long_function_a()
+    : call_very_long_function_b(
+        call_very_long_function_parameter_a,
+        call_very_long_function_parameter_b,
+        call_very_long_function_parameter_c,
+      ) +
+      call_very_long_function_c(
+        call_very_long_function_parameter_a,
+        call_very_long_function_parameter_b,
+        call_very_long_function_parameter_c,
+      );
+let ternary_operator_result_d = [
+  ...(first_variable === "some_none_empty_string"
+    ? [1, 2, 3, 4, 5, 6, 7, 8]
+    : []),
+];
+let result_a = a_very_long_condition_expression
+  ? "true branch............................."
+  : "false branch............................";
+let result_b = a_very_long_condition_expression
+  ? "true branch............................."
+  : "false branch";
+
+=====================================output=====================================
+var ternary_operator_result_a = 1 ? 10 : 20;
+var ternary_operator_result_b = ternary_operator_result_a>
+    ternary_operator_result_a+1
+      ? <div>true condition</div>
+      : <div>
+          <p>false condition</p>
+          <p>false condition</p>
+          <p>false condition</p>
+        </div>
+    ;
+var ternary_operator_result_c = ternary_operator_result_b+
+    ternary_operator_result_a
+        ? call_very_long_function_a()
+        : call_very_long_function_b(call_very_long_function_parameter_a,
+              call_very_long_function_parameter_b,
+              call_very_long_function_parameter_c)+
+          call_very_long_function_c(call_very_long_function_parameter_a,
+              call_very_long_function_parameter_b,
+              call_very_long_function_parameter_c);
+let ternary_operator_result_d = [
+    ...first_variable==='some_none_empty_string'
+        ? [1, 2, 3, 4, 5, 6, 7, 8] : [],
+];
+let result_a = a_very_long_condition_expression
+    ? 'true branch.............................'
+    : 'false branch............................';
+let result_b = a_very_long_condition_expression
+    ? 'true branch.............................' : 'false branch';
+
+================================================================================
+`;
+
+exports[`variable-declatation.js - {"trailingComma":"es5","tabWidth":4,"jsxTabWidth":2,"semi":true,"singleQuote":true,"jsxSingleQuote":false,"printWidth":79,"bracketSpacing":false,"arrowParens":"avoid","brdFormatting":true} format 1`] = `
+====================================options=====================================
+arrowParens: "avoid"
+bracketSpacing: false
+brdFormatting: true
+jsxSingleQuote: false
+jsxTabWidth: 2
+parsers: ["babel"]
+printWidth: 79
+semi: true
+singleQuote: true
+tabWidth: 4
+trailingComma: "es5"
+                                                                               | printWidth
+=====================================input======================================
+// https://brightdata.com/dna/js_code#format-var_declaration
+let a = (b = 1);
+let al = "test",
+  bl = fn("another", "test"),
+  cl = {
+    long_property_1: 1,
+    long_property_2: "2",
+    long_property_3: false,
+  },
+  dl = "yet another";
+let as = "test",
+  bs = f("another", "test"),
+  cs = "yet another";
+const variable =
+  optional_variable &&
+  {
+    default: "default",
+    success: "success",
+    alert: "alert",
+    warning: "warning",
+    info: "info",
+  }[optional_variable];
+
+=====================================output=====================================
+// https://brightdata.com/dna/js_code#format-var_declaration
+let a = b = 1;
+let al = 'test', bl = fn('another', 'test'), cl = {
+        long_property_1: 1,
+        long_property_2: '2',
+        long_property_3: false,
+    }, dl = 'yet another';
+let as = 'test', bs = f('another', 'test'), cs = 'yet another';
+const variable = optional_variable &&
+    {
+        default: 'default',
+        success: 'success',
+        alert: 'alert',
+        warning: 'warning',
+        info: 'info',
+    }[optional_variable];
+
+================================================================================
+`;
