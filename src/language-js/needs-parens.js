@@ -850,6 +850,9 @@ function needsParens(path, options) {
         case "AsConstExpression":
         case "SatisfiesExpression":
         case "TSNonNullExpression":
+          if (parent.type === "SpreadElement" && options.brdFormatting) {
+            return false;
+          }
           return true;
 
         case "NewExpression":

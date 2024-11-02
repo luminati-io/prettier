@@ -248,12 +248,10 @@ function printTernaryOld(path, options, print) {
     // Even though they don't need parens, we wrap (almost) everything in
     // parens when using ?: within JSX, because the parens are analogous to
     // curly braces in an if statement.
-    const wrap = (doc) => [
-      ifBreak("("),
-      indent([softline, doc]),
-      softline,
-      ifBreak(")"),
-    ];
+    const wrap = (doc) => {
+      if (options.brdFormatting) return doc;
+      return [ifBreak("("), indent([softline, doc]), softline, ifBreak(")")];
+    };
 
     // The only things we don't wrap are:
     // * Nested conditional expressions in alternates
