@@ -46,6 +46,9 @@ function printAssignment(
   switch (layout) {
     // First break after operator, then the sides are broken independently on their own lines
     case "break-after-operator":
+      if (options.brdFormatting) {
+        return group([group(leftDoc), operator, " ", indent(rightDoc)]);
+      }
       return group([group(leftDoc), operator, group(indent([line, rightDoc]))]);
 
     // First break right-hand side, then left-hand side

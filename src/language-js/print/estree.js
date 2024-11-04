@@ -351,7 +351,11 @@ function printEstree(path, options, print, args) {
             .slice(1)
             .map((p) => [
               ",",
-              hasValue && !isParentForLoop ? hardline : line,
+              options.brdFormatting && hasValue
+                ? " "
+                : hasValue && !isParentForLoop
+                  ? hardline
+                  : line,
               p,
             ]),
         ),
