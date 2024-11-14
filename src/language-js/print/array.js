@@ -123,32 +123,58 @@ function printArray(path, options, print) {
             ? ifBreak(",", "", { groupId })
             : ifBreak(",");
 
-    parts.push(
-      group(
-        [
-          openBracket,
-          indent([
-            softline,
-            shouldUseConciseFormatting
-              ? printArrayElementsConcisely(path, options, print, trailingComma)
-              : [
-                  printArrayElements(
+    if (options.brdFormatting) {
+      parts.push(
+        openBracket,
+        indent([
+          shouldUseConciseFormatting
+            ? printArrayElementsConcisely(path, options, print, trailingComma)
+            : fill(
+                printArrayElements(
+                  path,
+                  options,
+                  elementsProperty,
+                  node.inexact,
+                  print,
+                ),
+              ),
+          printDanglingComments(path, options),
+        ]),
+        closeBracket,
+      );
+    } else {
+      parts.push(
+        group(
+          [
+            openBracket,
+            indent([
+              softline,
+              shouldUseConciseFormatting
+                ? printArrayElementsConcisely(
                     path,
                     options,
-                    elementsProperty,
-                    node.inexact,
                     print,
-                  ),
-                  trailingComma,
-                ],
-            printDanglingComments(path, options),
-          ]),
-          softline,
-          closeBracket,
-        ],
-        { shouldBreak, id: groupId },
-      ),
-    );
+                    trailingComma,
+                  )
+                : [
+                    printArrayElements(
+                      path,
+                      options,
+                      elementsProperty,
+                      node.inexact,
+                      print,
+                    ),
+                    trailingComma,
+                  ],
+              printDanglingComments(path, options),
+            ]),
+            softline,
+            closeBracket,
+          ],
+          { shouldBreak, id: groupId },
+        ),
+      );
+    }
   }
 
   parts.push(
@@ -195,20 +221,38 @@ function isLineAfterElementEmpty({ node }, { originalText: text }) {
 function printArrayElements(path, options, elementsProperty, inexact, print) {
   const parts = [];
 
-  path.each(({ node, isLast }) => {
-    parts.push(node ? group(print()) : "");
+  if (inexact || !options.brdFormatting) {
+    path.each(({ node, isLast }) => {
+      parts.push(node ? group(print()) : "");
 
-    if (!isLast || inexact) {
-      parts.push([
-        ",",
-        line,
-        node && isLineAfterElementEmpty(path, options) ? softline : "",
-      ]);
+      if (!isLast || inexact) {
+        parts.push([
+          ",",
+          line,
+          node && isLineAfterElementEmpty(path, options) ? softline : "",
+        ]);
+      }
+    }, elementsProperty);
+
+    if (inexact) {
+      parts.push("...");
     }
-  }, elementsProperty);
+  } else {
+    path.each(({ node, isLast }) => {
+      const doc = node ? group(print()) : "";
 
-  if (inexact) {
-    parts.push("...");
+      if (isLast) {
+        parts.push(doc);
+      } else {
+        parts.push(
+          [doc, ","],
+          [
+            line,
+            node && isLineAfterElementEmpty(path, options) ? softline : "",
+          ],
+        );
+      }
+    }, elementsProperty);
   }
 
   return parts;

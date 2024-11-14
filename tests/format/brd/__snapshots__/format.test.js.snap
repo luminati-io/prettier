@@ -472,10 +472,7 @@ for (const n of [1, 2])
     // comment
     n();
 }
-for (const [k, v] of [
-    [1, 2],
-    [3, 4],
-])
+for (const [k, v] of [[1, 2], [3, 4]])
 {
     const r = v(k);
     r();
@@ -607,11 +604,9 @@ var ternary_operator_result_c = ternary_operator_result_b+
           call_very_long_function_c(call_very_long_function_parameter_a,
               call_very_long_function_parameter_b,
               call_very_long_function_parameter_c);
-let a = [
-    ...first_variable==='some_none_empty_string'
+let a = [...first_variable==='some_none_empty_string'
         ? [1, 2, 3, 4, 5, 6, 7, 8]
-        : [],
-];
+        : []];
 
 ================================================================================
 `;
