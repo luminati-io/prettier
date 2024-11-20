@@ -220,7 +220,6 @@ function printArrowFunctionSignature(path, options, print, args) {
     },
   });
   if (dangling) {
-    // parts.push(" ", dangling);
     parts.push(options.brdFormatting ? "" : " ", dangling);
   }
   return parts;

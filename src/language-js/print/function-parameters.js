@@ -6,6 +6,7 @@ import {
   indent,
   line,
   softline,
+  fill,
 } from "../../document/builders.js";
 import { removeLines, willBreak } from "../../document/utils.js";
 import { printDanglingComments } from "../../main/comments/print.js";
@@ -65,20 +66,42 @@ function printFunctionParameters(
   const printed = [];
   iterateFunctionParametersPath(path, (parameterPath, index) => {
     const isLastParameter = index === parameters.length - 1;
-    if (isLastParameter && functionNode.rest) {
-      printed.push("...");
-    }
-    printed.push(print());
-    if (isLastParameter) {
-      return;
-    }
-    printed.push(",");
-    if (isParametersInTestCall || shouldHugParameters) {
-      printed.push(" ");
-    } else if (isNextLineEmpty(parameters[index], options)) {
-      printed.push(hardline, hardline);
+    if (options.brdFormatting) {
+      let rest;
+      let comma;
+      if (isLastParameter && functionNode.rest) {
+        rest = "...";
+      }
+      if (!isLastParameter) {
+        comma = ",";
+      }
+      printed.push([rest, print(), comma].filter((p) => p !== undefined));
+      if (isLastParameter) {
+        return;
+      }
+      if (isParametersInTestCall || shouldHugParameters) {
+        printed.push(" ");
+      } else if (isNextLineEmpty(parameters[index], options)) {
+        printed.push([hardline, hardline]);
+      } else {
+        printed.push(line);
+      }
     } else {
-      printed.push(line);
+      if (isLastParameter && functionNode.rest) {
+        printed.push("...");
+      }
+      printed.push(print());
+      if (isLastParameter) {
+        return;
+      }
+      printed.push(",");
+      if (isParametersInTestCall || shouldHugParameters) {
+        printed.push(" ");
+      } else if (isNextLineEmpty(parameters[index], options)) {
+        printed.push(hardline, hardline);
+      } else {
+        printed.push(line);
+      }
     }
   });
 
@@ -149,13 +172,13 @@ function printFunctionParameters(
   return [
     typeParams,
     "(",
-    indent([softline, ...printed]),
+    indent(options.brdFormatting ? fill(printed) : [softline, ...printed]),
     ifBreak(
       !hasRestParameter(functionNode) && shouldPrintComma(options, "all")
         ? ","
         : "",
     ),
-    softline,
+    options.brdFormatting ? "" : softline,
     ")",
   ];
 }
